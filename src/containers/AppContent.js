@@ -5,7 +5,7 @@ import { blueGrey } from "@material-ui/core/colors";
 
 const styles = ({ background }) => ({
   appContent: {
-    background: background.primary
+    background: background.appContent
   },
   contentHeight: {
     flexGrow: 8.8

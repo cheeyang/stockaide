@@ -4,7 +4,10 @@ import {
   red,
   green,
   blue,
-  deepOrange
+  deepOrange,
+  grey,
+  lightBlue,
+  cyan
 } from "@material-ui/core/colors";
 
 /**
@@ -16,12 +19,15 @@ const getTheme = theme =>
       type: theme
     },
     typography: {
-      fontSize: 12
+      fontSize: 12,
+      title: {
+        color: theme === "dark" ? cyan[50] : blue[800]
+      }
     },
     // Custom Theme Variables
     background: {
-      primary: theme === "dark" ? blueGrey[700] : blueGrey[500],
-      secondary: theme === "dark" ? blueGrey[900] : blueGrey[300]
+      appBars: theme === "dark" ? blueGrey[700] : lightBlue[200],
+      appContent: theme === "dark" ? blueGrey[900] : grey[50]
     },
     status: {
       success: green[300],

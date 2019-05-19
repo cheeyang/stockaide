@@ -10,7 +10,7 @@ import store from "./store";
 import { MuiThemeProvider } from "@material-ui/core";
 import getTheme from "./theme";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { THEMES } from "./constants";
+import config from "./config";
 
 const styles = {
   appRoot: {
@@ -23,7 +23,7 @@ const App = props => {
   return (
     <Provider store={store}>
       <CssBaseline />
-      <MuiThemeProvider theme={getTheme(THEMES.LIGHT)}>
+      <MuiThemeProvider theme={getTheme(config.theme)}>
         <Grid container direction="column" className={classes.appRoot}>
           <AppHeader />
           <AppContent />
