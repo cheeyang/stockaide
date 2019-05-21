@@ -1,7 +1,14 @@
 import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
-import { blueGrey } from "@material-ui/core/colors";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
+import Login from "../containers/Login";
+import Dashboard from "../containers/Dashboard";
 
 const styles = ({ background }) => ({
   appContent: {
@@ -21,7 +28,15 @@ const AppContent = props => {
       classes={{
         container: classes.contentHeight
       }}
-    />
+    >
+      <Router>
+        <Switch>
+          <Route exact path="/" render={() => <Redirect to="/login" />} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/home" component={Dashboard} />
+        </Switch>
+      </Router>
+    </Grid>
   );
 };
 export default withStyles(styles)(AppContent);

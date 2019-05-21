@@ -24,6 +24,14 @@ const getTheme = theme =>
         color: theme === "dark" ? cyan[50] : blue[800]
       }
     },
+    //Overrrides
+    overrides: {
+      MuiButton: {
+        root: {
+          backgroundColor: theme === "dark" ? blueGrey[700] : lightBlue[200]
+        }
+      }
+    },
     // Custom Theme Variables
     background: {
       appBars: theme === "dark" ? blueGrey[700] : lightBlue[200],

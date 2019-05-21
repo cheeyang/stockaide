@@ -29,7 +29,7 @@ const AppHeader = props => {
       alignItems="center"
     >
       <Grid item>
-        <Typography variant="title">My App</Typography>
+        <Typography variant="title">Stock Aide</Typography>
       </Grid>
     </Grid>
   );
