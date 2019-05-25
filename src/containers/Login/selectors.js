@@ -1,10 +1,5 @@
-const getUser = () => state => {
-  console.log("SELECTOR: ", state);
-  return state.user;
-};
+const getUser = () => state => state.auth.user;
 
-const selectors = {
-  getUser
-};
+const selectors = { getUser };
 
 export default selectors;

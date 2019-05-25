@@ -25,15 +25,9 @@ const App = props => {
   );
 };
 
-const mapState = state => {
-  console.log("STATE: ", state);
-  console.log("SELECT.AUTH: ", select.auth);
-  return { user: select.auth.getUser(state) };
-};
+const mapState = state => ({ user: select.auth.getUser(state) });
 
-const mapDispatch = dispatch => ({
-  dispatch
-});
+const mapDispatch = dispatch => ({ dispatch });
 
 export default connect(
   mapState,
