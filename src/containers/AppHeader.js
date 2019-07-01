@@ -5,9 +5,9 @@ import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 
-const styles = ({ background }) => ({
+const styles = ({ background, palette }) => ({
   appHeader: {
-    background: background.secondary
+    background: background.appBars
   },
   headerHeight: {
     flexGrow: 0.7
@@ -29,7 +29,7 @@ const AppHeader = props => {
       alignItems="center"
     >
       <Grid item>
-        <Typography color="primary">My App</Typography>
+        <Typography variant="title">Stock Aide</Typography>
       </Grid>
     </Grid>
   );

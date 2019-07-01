@@ -5,12 +5,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import AppHeader from "./containers/AppHeader";
 import AppFooter from "./containers/AppFooter";
 import AppContent from "./containers/AppContent";
-import { Provider } from "react-redux";
-import store from "./store";
-import { MuiThemeProvider } from "@material-ui/core";
-import getTheme from "./theme";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { THEMES } from "./constants";
+import { connect } from "react-redux";
+import { select } from "./store";
 
 const styles = {
   appRoot: {
@@ -19,19 +15,21 @@ const styles = {
 };
 
 const App = props => {
-  const { classes } = props;
+  const { classes, user } = props;
   return (
-    <Provider store={store}>
-      <CssBaseline />
-      <MuiThemeProvider theme={getTheme(THEMES.LIGHT)}>
-        <Grid container direction="column" className={classes.appRoot}>
-          <AppHeader />
-          <AppContent />
-          <AppFooter />
-        </Grid>
-      </MuiThemeProvider>
-    </Provider>
+    <Grid container direction="column" className={classes.appRoot}>
+      <AppHeader hidden={!user} />
+      <AppContent />
+      <AppFooter hidden={!user} />
+    </Grid>
   );
 };
 
-export default withStyles(styles)(App);
+const mapState = state => ({ user: select.auth.getUser(state) });
+
+const mapDispatch = dispatch => ({ dispatch });
+
+export default connect(
+  mapState,
+  mapDispatch
+)(withStyles(styles)(App));
