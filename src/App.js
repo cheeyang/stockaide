@@ -18,9 +18,11 @@ const App = props => {
   const { classes, user } = props;
   return (
     <Grid container direction="column" className={classes.appRoot}>
+      {/* TODO: Set up navbar within header for navigation within menu item clicked in drawer*/}
       <AppHeader hidden={!user} />
       <AppContent />
       <AppFooter hidden={!user} />
+      {/* TODO: Set up Drawer Component for navigation to Portfolio, Trade, */}
     </Grid>
   );
 };
@@ -33,3 +35,31 @@ export default connect(
   mapState,
   mapDispatch
 )(withStyles(styles)(App));
+
+/**
+ * Search? Should this be forever in app bar?
+ *
+ * Portfolio
+ * - Dashboard
+ *
+ * Market Watch
+ * - Watchlist
+ * - Create watchlist
+ *
+ * Trade
+ * - Chart
+ * - Order
+ * - Order Status
+ *
+ * Alerts
+ * - Manage Alerts
+ *
+ * Account (Last priority)
+ * - UserId
+ * - Password Reset
+ *
+ * Settings
+ * - Theme
+ * - Manage Notifications
+ *
+ */
