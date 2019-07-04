@@ -8,12 +8,12 @@ import store from "./store";
 import { MuiThemeProvider } from "@material-ui/core";
 import getTheme from "./theme";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import config from "./config";
+import appConfig from "./config/appConfig";
 
 ReactDOM.render(
   <Provider store={store}>
     <CssBaseline />
-    <MuiThemeProvider theme={getTheme(config.theme)}>
+    <MuiThemeProvider theme={getTheme(appConfig.theme)}>
       <App />
     </MuiThemeProvider>
   </Provider>,

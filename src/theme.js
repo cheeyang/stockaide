@@ -37,6 +37,10 @@ const getTheme = theme =>
       appBars: theme === "dark" ? blueGrey[700] : lightBlue[200],
       appContent: theme === "dark" ? blueGrey[900] : grey[50]
     },
+    divider: {
+      primary: theme === "dark" ? grey[100] : grey[800],
+      secondary: theme === "dark" ? grey[300] : grey[600]
+    },
     status: {
       success: green[300],
       pending: blue[400],

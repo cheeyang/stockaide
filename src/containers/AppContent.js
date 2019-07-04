@@ -1,14 +1,11 @@
 import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect
-} from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Login from "../containers/Login";
 import Dashboard from "../containers/Dashboard";
+import PropTypes from "prop-types";
+import Alerts from "./Alerts";
 
 const styles = ({ background }) => ({
   appContent: {
@@ -19,7 +16,22 @@ const styles = ({ background }) => ({
   }
 });
 const AppContent = props => {
-  const { classes } = props;
+  const { classes, user } = props;
+
+  const renderRoutes = () => {
+    if (!user) {
+      return <Login />;
+    }
+    return (
+      <React.Fragment>
+        <Route exact path="/" render={() => <Redirect to="/login" />} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/dashboard" component={Dashboard} />
+        <Route exact path="/alerts" component={Alerts} />
+      </React.Fragment>
+    );
+  };
+
   return (
     <Grid
       container
@@ -29,14 +41,11 @@ const AppContent = props => {
         container: classes.contentHeight
       }}
     >
-      <Router>
-        <Switch>
-          <Route exact path="/" render={() => <Redirect to="/login" />} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/home" component={Dashboard} />
-        </Switch>
-      </Router>
+      <Switch>{renderRoutes()}</Switch>
     </Grid>
   );
 };
 export default withStyles(styles)(AppContent);
+AppContent.propTypes = {
+  user: PropTypes.string
+};
