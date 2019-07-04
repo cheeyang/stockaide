@@ -7,6 +7,7 @@ import AppFooter from "./containers/AppFooter";
 import AppContent from "./containers/AppContent";
 import { connect } from "react-redux";
 import { select } from "./store";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const styles = {
   appRoot: {
@@ -18,11 +19,13 @@ const App = props => {
   const { classes, user } = props;
   return (
     <Grid container direction="column" className={classes.appRoot}>
-      {/* TODO: Set up navbar within header for navigation within menu item clicked in drawer*/}
-      <AppHeader hidden={!user} />
-      <AppContent />
-      <AppFooter hidden={!user} />
-      {/* TODO: Set up Drawer Component for navigation to Portfolio, Trade, */}
+      <Router>
+        {/* TODO: Set up navbar within header for navigation within menu item clicked in drawer*/}
+        <AppHeader hidden={!user} />
+        <AppContent user={user} />
+        <AppFooter hidden={!user} />
+        {/* TODO: Set up Drawer Component for navigation to Portfolio, Trade, */}
+      </Router>
     </Grid>
   );
 };

@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 
 const handleClick = props => () => {
   props.dispatch.auth.setUser("Guest");
-  props.history.push("/home");
+  props.history.push("/dashboard");
 };
 
 const Login = props => {
