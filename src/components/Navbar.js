@@ -29,7 +29,7 @@ const Navbar = props => {
         <Grid
           item
           key={item.id}
-          class={classNames(classes.navbarItem, {
+          className={classNames(classes.navbarItem, {
             [`${classes.appendDivider}`]: index !== navbarItems.length - 1
           })}
           onClick={handleClickNavbarItem(item)}

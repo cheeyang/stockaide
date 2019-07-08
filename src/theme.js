@@ -6,7 +6,6 @@ import {
   blue,
   deepOrange,
   grey,
-  lightBlue,
   cyan
 } from "@material-ui/core/colors";
 
@@ -28,13 +27,13 @@ const getTheme = theme =>
     overrides: {
       MuiButton: {
         root: {
-          backgroundColor: theme === "dark" ? blueGrey[700] : lightBlue[200]
+          backgroundColor: theme === "dark" ? blueGrey[700] : cyan[200]
         }
       }
     },
     // Custom Theme Variables
     background: {
-      appBars: theme === "dark" ? blueGrey[700] : lightBlue[200],
+      appBars: theme === "dark" ? blueGrey[700] : cyan[200],
       appContent: theme === "dark" ? blueGrey[900] : grey[50]
     },
     divider: {

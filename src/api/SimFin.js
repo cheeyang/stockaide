@@ -1,4 +1,5 @@
 import axios from "axios";
+import get from "lodash/get";
 
 /**
  * function getSimFinId
@@ -16,19 +17,26 @@ export const fetchSimFinIdByTicker = async ticker => {
   return res;
 };
 
-// export const findSimFinIdByCompany = async ticker => {
-//   const url = `https://simfin.com/api/v1/info/find-id/ticker/${ticker}`;
-//   var res = await axios.get(url, {
-//     params: {
-//       "api-key": process.env.REACT_APP_SIM_FIN_API_KEY
-//     }
-//   });
-//   console.log(res);
-//   return res;
-// };
+export const fetchSimFinIdByCpnyName = async name => {
+  const url = `https://simfin.com/api/v1/info/find-id/ticker/${name}`;
+  let res = await axios.get(url, {
+    params: {
+      "api-key": process.env.REACT_APP_SIM_FIN_API_KEY
+    }
+  });
+  console.log(res);
+  return res;
+};
 
-// export const fetchSimFinRsiById = async simFinId => {
-//   const url = `https://simfin.com/api/v1/info/find-id/ticker/${ticker}`
-// }
+export const fetchAllEntities = async () => {
+  const url = "https://simfin.com/api/v1/info/all-entities";
+  let res = await axios.get(url, {
+    params: {
+      "api-key": process.env.REACT_APP_SIM_FIN_API_KEY
+    }
+  });
+  console.log(res);
+  return get(res, "data", []);
+};
 
-//TODOL Set up axios defaults to include API KEY
+//TODO Set up axios defaults to include API KEY

@@ -42,13 +42,13 @@ const AppHeader = props => {
         item
         justify="center"
         alignItems="center"
-        class={classes.appHeaderLeft}
+        className={classes.appHeaderLeft}
       >
         <Grid container item justify="center">
           <Typography variant="title">Stock Aide</Typography>
         </Grid>
       </Grid>
-      <Grid container item justify="center" class={classes.appHeaderRight}>
+      <Grid container item justify="center" className={classes.appHeaderRight}>
         <Navbar />
       </Grid>
     </Grid>
