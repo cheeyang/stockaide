@@ -12,9 +12,7 @@ const Login = props => {
   return (
     <Grid>
       <Typography>Login Page</Typography>
-      <Button primary onClick={handleClick(props)}>
-        Click to login
-      </Button>
+      <Button onClick={handleClick(props)}>Click to login</Button>
     </Grid>
   );
 };

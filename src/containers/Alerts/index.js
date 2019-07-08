@@ -1,67 +1,28 @@
 import React, { useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Select from "react-select";
 import { fetchAllEntities } from "../../api/SimFin";
-import get from "lodash/get";
-import cloneDeep from "lodash/cloneDeep";
-import debounce from "lodash/debounce";
-import isEmpty from "lodash/isEmpty";
+import EntitySelect from "./EntitySelect";
+import Divider from "@material-ui/core/Divider";
+import withStyles from "@material-ui/core/styles/withStyles";
+import { dispatch } from "../../store";
+import sortBy from "lodash/sortBy";
 
 const styles = theme => ({
-  textField: {
-    margin: "8px"
+  divider: {
+    margin: "5px 0 15px 0"
   }
 });
 
 const Alerts = props => {
   const [masterEntityList, setMasterEntityList] = useState([]);
-  const [selectableOptions, setSelectableOptions] = useState([]);
-  const [selectedOption, setSelectedOption] = useState({});
-  const [searchString, setSearchString] = useState("");
 
   const getMasterEntityList = async () => {
-    const allEntities = await fetchAllEntities();
+    dispatch.app.setLoading("fetchAllEntities", true);
+    let allEntities = await fetchAllEntities();
+    allEntities = sortBy(allEntities, ["ticker", "name"]);
     setMasterEntityList(allEntities);
-  };
-
-  function getSearchResults() {
-    if (searchString.length < 1) {
-      return [];
-    }
-    const searchStringLC = searchString.toLowerCase();
-    const newFilteredList = masterEntityList.filter(result => {
-      if (result.name && result.ticker) {
-        return (
-          get(result, "name", "")
-            .toLowerCase()
-            .includes(searchStringLC) ||
-          get(result, "ticker", "")
-            .toLowerCase()
-            .includes(searchStringLC)
-        );
-      }
-      return false;
-    });
-    const options = newFilteredList.map(result => {
-      let option = {};
-      option.value = cloneDeep(result);
-      option.label = `${result.ticker} | ${result.name}`;
-      return option;
-    });
-    setSelectableOptions(options);
-  }
-
-  const debouncedSearch = debounce(getSearchResults, 500);
-
-  const handleInputChange = searchStr => {
-    setSearchString(searchStr);
-    debouncedSearch();
-  };
-
-  const handleSelect = selectedOption => {
-    setSelectedOption(selectedOption);
+    dispatch.app.setLoading("fetchAllEntities", false);
   };
 
   useEffect(() => {
@@ -69,20 +30,13 @@ const Alerts = props => {
   }, []);
 
   return (
-    <Grid container justify="center" direction="column">
+    <Grid container direction="column">
       <Grid container item justify="center">
-        <Typography variant="title">Alerts</Typography>
+        <Typography variant="title">Set Alerts</Typography>
       </Grid>
+      <Divider className={props.classes.divider} />
       <Grid item>
-        <Select
-          id="search"
-          options={selectableOptions}
-          value={!isEmpty(selectedOption) ? selectedOption : undefined}
-          inputValue={!isEmpty(searchString) ? searchString : undefined}
-          onChange={handleSelect}
-          onInputChange={handleInputChange}
-          placeholder="Seach by Company Name or Ticker Symbol"
-        />
+        <EntitySelect masterEntityList={masterEntityList} />
       </Grid>
     </Grid>
   );

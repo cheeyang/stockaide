@@ -8,6 +8,8 @@ import AppContent from "./containers/AppContent";
 import { connect } from "react-redux";
 import { select } from "./store";
 import { BrowserRouter as Router } from "react-router-dom";
+import FullScreenSpinner from "./components/FullScreenSpinner";
+import isEmpty from "lodash/isEmpty";
 
 const styles = {
   appRoot: {
@@ -16,11 +18,12 @@ const styles = {
 };
 
 const App = props => {
-  const { classes, user } = props;
+  const { classes, user, isLoading } = props;
   return (
     <Grid container direction="column" className={classes.appRoot}>
       <Router>
         {/* TODO: Set up navbar within header for navigation within menu item clicked in drawer*/}
+        <FullScreenSpinner hidden={!isLoading} />
         <AppHeader hidden={!user} />
         <AppContent user={user} />
         <AppFooter hidden={!user} />
@@ -30,7 +33,10 @@ const App = props => {
   );
 };
 
-const mapState = state => ({ user: select.auth.getUser(state) });
+const mapState = state => ({
+  user: select.auth.getUser(state),
+  isLoading: !isEmpty(select.app.getLoadingItems(state))
+});
 
 const mapDispatch = dispatch => ({ dispatch });
 

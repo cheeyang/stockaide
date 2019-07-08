@@ -9,7 +9,8 @@ import Alerts from "./Alerts";
 
 const styles = ({ background }) => ({
   appContent: {
-    background: background.appContent
+    background: background.appContent,
+    padding: "20px"
   },
   contentHeight: {
     flexGrow: 8.8

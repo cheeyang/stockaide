@@ -3,6 +3,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
+import Hidden from "@material-ui/core/Hidden";
 import Navbar from "../components/Navbar";
 
 const styles = ({ background, palette, divider }) => ({
@@ -10,13 +11,9 @@ const styles = ({ background, palette, divider }) => ({
     background: background.appBars
   },
   appHeaderLeft: {
-    width: "20%",
     borderWidth: "0 1px 0 0",
     borderStyle: "solid",
     borderColor: divider.primary
-  },
-  appHeaderRight: {
-    width: "80%"
   },
   headerHeight: {
     flexGrow: 0.7
@@ -31,24 +28,34 @@ const AppHeader = props => {
   return (
     <Grid
       container
-      primary
       className={classes.appHeader}
       classes={{ container: classes.headerHeight }}
       justify="space-between"
       alignItems="center"
     >
+      <Hidden xsDown>
+        <Grid
+          container
+          item
+          xs={3}
+          md={2}
+          justify="center"
+          alignItems="center"
+          className={classes.appHeaderLeft}
+        >
+          <Grid container item justify="center">
+            <Typography variant="title">Stock Aide</Typography>
+          </Grid>
+        </Grid>
+      </Hidden>
       <Grid
         container
+        xs={9}
+        md={10}
         item
         justify="center"
-        alignItems="center"
-        className={classes.appHeaderLeft}
+        className={classes.appHeaderRight}
       >
-        <Grid container item justify="center">
-          <Typography variant="title">Stock Aide</Typography>
-        </Grid>
-      </Grid>
-      <Grid container item justify="center" className={classes.appHeaderRight}>
         <Navbar />
       </Grid>
     </Grid>
