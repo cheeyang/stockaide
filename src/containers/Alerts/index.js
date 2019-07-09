@@ -18,11 +18,16 @@ const Alerts = props => {
   const [masterEntityList, setMasterEntityList] = useState([]);
 
   const getMasterEntityList = async () => {
-    dispatch.app.setLoading("fetchAllEntities", true);
-    let allEntities = await fetchAllEntities();
-    allEntities = sortBy(allEntities, ["ticker", "name"]);
-    setMasterEntityList(allEntities);
-    dispatch.app.setLoading("fetchAllEntities", false);
+    try {
+      dispatch.app.setLoading("fetchAllEntities", true);
+      let allEntities = await fetchAllEntities();
+      allEntities = sortBy(allEntities, ["ticker", "name"]);
+      setMasterEntityList(allEntities);
+    } catch (error) {
+      console.error("Error while fetching all entities from simFinAPI");
+    } finally {
+      dispatch.app.setLoading("fetchAllEntities", false);
+    }
   };
 
   useEffect(() => {
