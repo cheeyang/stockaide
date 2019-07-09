@@ -16,20 +16,17 @@ const simFinApi = axios.create({
 export const fetchSimFinIdByTicker = async ticker => {
   const url = `/info/find-id/ticker/${ticker}`;
   var res = await simFinApi.get(url);
-  console.log(res);
   return res;
 };
 
 export const fetchSimFinIdByCpnyName = async name => {
   const url = `/info/find-id/ticker/${name}`;
   let res = await simFinApi.get(url);
-  console.log(res);
   return res;
 };
 
 export const fetchAllEntities = async () => {
   const url = "/info/all-entities";
   let res = await simFinApi.get(url);
-  console.log(res);
   return get(res, "data", []);
 };

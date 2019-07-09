@@ -8,6 +8,4 @@ const alphaVantageApi = axios.create({
   }
 });
 
-const 
-
 //TODO Set up axios defaults to include API KEY
