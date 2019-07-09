@@ -7,6 +7,7 @@ import Divider from "@material-ui/core/Divider";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { dispatch } from "../../store";
 import sortBy from "lodash/sortBy";
+import { fetchSymbolSearch } from "../../api/AlphaVantage";
 
 const styles = theme => ({
   divider: {
@@ -32,6 +33,7 @@ const Alerts = props => {
 
   useEffect(() => {
     getMasterEntityList();
+    fetchSymbolSearch("Memtech");
   }, []);
 
   return (

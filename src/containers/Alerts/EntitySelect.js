@@ -5,6 +5,7 @@ import debounce from "lodash/debounce";
 import isEmpty from "lodash/isEmpty";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Select from "react-select";
+import PropTypes from "prop-types";
 
 const styles = theme => ({});
 
@@ -52,6 +53,7 @@ const EntitySelect = props => {
   };
 
   const handleSelect = selectedOption => {
+    props.onSelect();
     setSelectedOption(selectedOption);
   };
 
@@ -69,3 +71,11 @@ const EntitySelect = props => {
 };
 
 export default withStyles(styles)(EntitySelect);
+
+EntitySelect.propTypes = {
+  onSelect: PropTypes.func
+};
+
+EntitySelect.defaultProps = {
+  onSelect: () => {}
+};
