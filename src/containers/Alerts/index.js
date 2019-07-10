@@ -33,8 +33,18 @@ const Alerts = props => {
 
   useEffect(() => {
     getMasterEntityList();
-    fetchSymbolSearch("Memtech");
   }, []);
+
+  const fetchResults = async searchString => {
+    try {
+      return await fetchSymbolSearch(searchString);
+    } catch (error) {
+      console.error(
+        `Error: unable to fetch search results for symbol: "${searchString}".\n`,
+        error
+      );
+    }
+  };
 
   return (
     <Grid container direction="column">
@@ -44,6 +54,13 @@ const Alerts = props => {
       <Divider className={props.classes.divider} />
       <Grid item>
         <EntitySelect masterEntityList={masterEntityList} />
+      </Grid>
+      <Grid item>
+        <EntitySelect
+          masterEntityList={masterEntityList}
+          searchFnOnKeyPress={fetchResults}
+          displayAttributes={["1. symbol", "2. name"]}
+        />
       </Grid>
     </Grid>
   );

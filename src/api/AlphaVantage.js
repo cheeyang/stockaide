@@ -12,12 +12,16 @@ const alphaVantageApi = axios.create({
 });
 
 export const fetchSymbolSearch = async searchString => {
-  console.log("API KEY: ", process.env.REACT_APP_ALPHA_VANTAGE_API_KEY);
-  await alphaVantageApi.get("", {
+  const resultSet = await alphaVantageApi.get("", {
     params: {
       function: "SYMBOL_SEARCH",
       keywords: searchString,
       apikey: process.env.REACT_APP_ALPHA_VANTAGE_API_KEY
     }
   });
+  const matches = get(resultSet, "data.bestMatches");
+  if (!matches) {
+    throw resultSet;
+  }
+  return matches;
 };
