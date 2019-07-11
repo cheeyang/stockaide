@@ -6,15 +6,14 @@ import EntitySelect from "./EntitySelect";
 import Divider from "@material-ui/core/Divider";
 import { fetchSymbolSearch } from "../../api/AlphaVantage";
 import TickerInfo from "../../components/TickerInfo";
-import get from "lodash/get";
 import { AV_SEARCH, AV_INTERVAL, AV_SERIES_TYPE } from "../../api/constants";
 import { CircularProgress } from "@material-ui/core";
 
 const tickerInfoOptions = {
   indicatorList: ["RSI", "MACD"],
   interval: AV_INTERVAL.DAILY,
-  seriesType: AV_SERIES_TYPE.CLOSE,
-  timePeriod: 60
+  seriesType: AV_SERIES_TYPE.OPEN,
+  timePeriod: 20
 };
 
 const useStyles = makeStyles(theme => ({
@@ -91,10 +90,7 @@ const Alerts = props => {
 
       <Grid item className={classes.tickerInfo}>
         {selectedTicker && (
-          <TickerInfo
-            tickerSymbol={get(selectedTicker, ["value", AV_SEARCH.SYMBOL])}
-            options={tickerInfoOptions}
-          />
+          <TickerInfo ticker={selectedTicker} options={tickerInfoOptions} />
         )}
       </Grid>
     </Grid>

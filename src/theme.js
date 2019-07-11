@@ -6,7 +6,11 @@ import {
   blue,
   deepOrange,
   grey,
-  cyan
+  cyan,
+  brown,
+  lime,
+  lightGreen,
+  teal
 } from "@material-ui/core/colors";
 
 /**
@@ -15,7 +19,10 @@ import {
 const getTheme = theme =>
   createMuiTheme({
     palette: {
-      type: theme
+      type: theme,
+      secondary: {
+        main: grey[500]
+      }
     },
     typography: {
       fontSize: 12,
@@ -34,7 +41,8 @@ const getTheme = theme =>
     // Custom Theme Variables
     background: {
       appBars: theme === "dark" ? blueGrey[700] : cyan[200],
-      appContent: theme === "dark" ? blueGrey[900] : grey[50]
+      appContent: theme === "dark" ? blueGrey[900] : grey[50],
+      cards: theme === "dark" ? teal["A700"] : lightGreen[50]
     },
     divider: {
       primary: theme === "dark" ? grey[100] : grey[800],
