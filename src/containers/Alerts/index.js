@@ -1,69 +1,104 @@
 import React, { useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { fetchAllEntities } from "../../api/SimFin";
+import makeStyles from "@material-ui/styles/makeStyles";
 import EntitySelect from "./EntitySelect";
 import Divider from "@material-ui/core/Divider";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { dispatch } from "../../store";
-import sortBy from "lodash/sortBy";
 import { fetchSymbolSearch } from "../../api/AlphaVantage";
+import TickerInfo from "../../components/TickerInfo";
+import get from "lodash/get";
+import { AV_SEARCH, AV_INTERVAL, AV_SERIES_TYPE } from "../../api/constants";
+import { CircularProgress } from "@material-ui/core";
 
-const styles = theme => ({
+const tickerInfoOptions = {
+  indicatorList: ["RSI", "MACD"],
+  interval: AV_INTERVAL.DAILY,
+  seriesType: AV_SERIES_TYPE.CLOSE,
+  timePeriod: 60
+};
+
+const useStyles = makeStyles(theme => ({
   divider: {
     margin: "5px 0 15px 0"
+  },
+  cardInfo: {
+    marginTop: "50px"
+  },
+  entitySearchWrapper: {
+    position: "relative"
+  },
+  searchResultsLoading: {
+    position: "absolute",
+    zIndex: 2,
+    left: "50%",
+    top: "10%"
   }
-});
+}));
 
 const Alerts = props => {
-  const [masterEntityList, setMasterEntityList] = useState([]);
+  const classes = useStyles();
+  const [selectedTicker, setSelectedTicker] = useState();
+  const [loadingSearchResults, setLoadingSearchResults] = useState(false);
 
-  const getMasterEntityList = async () => {
-    try {
-      dispatch.app.setLoading("fetchAllEntities", true);
-      let allEntities = await fetchAllEntities();
-      allEntities = sortBy(allEntities, ["ticker", "name"]);
-      setMasterEntityList(allEntities);
-    } catch (error) {
-      console.error("Error while fetching all entities from simFinAPI");
-    } finally {
-      dispatch.app.setLoading("fetchAllEntities", false);
-    }
+  const showLoadingIndicator = () => {
+    setLoadingSearchResults(true);
   };
-
-  useEffect(() => {
-    getMasterEntityList();
-  }, []);
 
   const fetchResults = async searchString => {
     try {
+      showLoadingIndicator();
       return await fetchSymbolSearch(searchString);
     } catch (error) {
       console.error(
         `Error: unable to fetch search results for symbol: "${searchString}".\n`,
         error
       );
+    } finally {
+      setLoadingSearchResults(false);
     }
   };
+
+  const handleSelectTicker = selectedTicker => {
+    setSelectedTicker(selectedTicker);
+  };
+
+  useEffect(() => {}, [selectedTicker]);
 
   return (
     <Grid container direction="column">
       <Grid container item justify="center">
         <Typography variant="title">Set Alerts</Typography>
       </Grid>
-      <Divider className={props.classes.divider} />
-      <Grid item>
-        <EntitySelect masterEntityList={masterEntityList} />
-      </Grid>
-      <Grid item>
+      <Divider className={classes.divider} />
+      <Grid
+        id="entitySearchWrapper"
+        item
+        className={classes.entitySearchWrapper}
+      >
+        {loadingSearchResults && (
+          <CircularProgress
+            size={30}
+            color="secondary"
+            className={classes.searchResultsLoading}
+          />
+        )}
         <EntitySelect
-          masterEntityList={masterEntityList}
           searchFnOnKeyPress={fetchResults}
-          displayAttributes={["1. symbol", "2. name"]}
+          onSelect={handleSelectTicker}
+          displayAttributes={[AV_SEARCH.SYMBOL, AV_SEARCH.NAME]}
         />
+      </Grid>
+
+      <Grid item className={classes.tickerInfo}>
+        {selectedTicker && (
+          <TickerInfo
+            tickerSymbol={get(selectedTicker, ["value", AV_SEARCH.SYMBOL])}
+            options={tickerInfoOptions}
+          />
+        )}
       </Grid>
     </Grid>
   );
 };
 
-export default withStyles(styles)(Alerts);
+export default Alerts;

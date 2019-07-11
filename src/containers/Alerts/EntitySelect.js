@@ -70,7 +70,7 @@ const EntitySelect = props => {
     setIsDebouncing(true);
     debounceId = setTimeout(() => {
       setIsDebouncing(false);
-    }, 1000);
+    }, 700);
     setSearchString(searchStr);
   };
 
@@ -86,7 +86,7 @@ const EntitySelect = props => {
   }, [searchString, isDebouncing]);
 
   const handleSelect = selectedOption => {
-    props.onSelect();
+    props.onSelect(selectedOption);
     setSelectedOption(selectedOption);
   };
 
