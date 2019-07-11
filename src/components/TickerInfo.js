@@ -51,7 +51,7 @@ const TickerInfo = props => {
         <Typography variant="body2">
           RSI :{" "}
           {isTickerLoading ? (
-            <CircularProgress color="secondary" size={15} />
+            <CircularProgress color="secondary" size={13} />
           ) : (
             rsi
           )}
@@ -64,6 +64,9 @@ const TickerInfo = props => {
 export default TickerInfo;
 
 TickerInfo.propTypes = {
-  ticker: PropTypes.string.isRequired,
+  ticker: PropTypes.shape({
+    label: PropTypes.string.isRequired,
+    value: PropTypes.object.isRequired
+  }).isRequired,
   indicatorList: PropTypes.arrayOf("string")
 };

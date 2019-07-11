@@ -10,7 +10,7 @@ const handleClick = props => () => {
 
 const Login = props => {
   return (
-    <Grid>
+    <Grid container direction="column" justify="center" alignItems="center">
       <Typography>Login Page</Typography>
       <Button onClick={handleClick(props)}>Click to login</Button>
     </Grid>

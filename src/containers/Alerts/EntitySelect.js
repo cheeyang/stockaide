@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import get from "lodash/get";
 import cloneDeep from "lodash/cloneDeep";
 import isEmpty from "lodash/isEmpty";
-import withStyles from "@material-ui/core/styles/withStyles";
+import makeStyles from "@material-ui/styles/makeStyles";
+import Grid from "@material-ui/core/Grid";
 import Select from "react-select";
 import PropTypes from "prop-types";
+import { CircularProgress } from "@material-ui/core";
 
 let debounceId;
 
@@ -17,14 +19,25 @@ const selectStyles = {
   // })
 };
 
-const styles = theme => ({});
+const useStyles = makeStyles(theme => ({
+  entitySearchWrapper: {
+    position: "relative"
+  },
+  searchResultsLoading: {
+    position: "absolute",
+    zIndex: 2,
+    left: "calc(50% - 14px)",
+    top: "10%"
+  }
+}));
 
 const EntitySelect = props => {
-  const { masterEntityList, displayAttributes } = props;
+  const { masterEntityList, displayAttributes, isLoading } = props;
   const [selectableOptions, setSelectableOptions] = useState([]);
   const [isDebouncing, setIsDebouncing] = useState(true);
   const [selectedOption, setSelectedOption] = useState({});
   const [searchString, setSearchString] = useState("");
+  const classes = useStyles();
 
   const getOptions = resultList =>
     resultList.map(result => {
@@ -91,20 +104,29 @@ const EntitySelect = props => {
   };
 
   return (
-    <Select
-      id="search"
-      options={selectableOptions}
-      value={!isEmpty(selectedOption) ? selectedOption : undefined}
-      inputValue={!isEmpty(searchString) ? searchString : undefined}
-      onChange={handleSelect}
-      onInputChange={handleInputChange}
-      placeholder="Seach by Company Name or Ticker Symbol"
-      styles={selectStyles}
-    />
+    <Grid id="entitySearchWrapper" className={classes.entitySearchWrapper}>
+      {isLoading && (
+        <CircularProgress
+          size={30}
+          color="primary"
+          className={classes.searchResultsLoading}
+        />
+      )}
+      <Select
+        id="search"
+        options={selectableOptions}
+        value={!isEmpty(selectedOption) ? selectedOption : undefined}
+        inputValue={!isEmpty(searchString) ? searchString : undefined}
+        onChange={handleSelect}
+        onInputChange={handleInputChange}
+        placeholder="Seach by Company Name or Ticker Symbol"
+        styles={selectStyles}
+      />
+    </Grid>
   );
 };
 
-export default withStyles(styles)(EntitySelect);
+export default EntitySelect;
 
 EntitySelect.propTypes = {
   searchOnKeyPress: PropTypes.bool,

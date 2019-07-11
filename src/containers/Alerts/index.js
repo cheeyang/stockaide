@@ -7,7 +7,6 @@ import Divider from "@material-ui/core/Divider";
 import { fetchSymbolSearch } from "../../api/AlphaVantage";
 import TickerInfo from "../../components/TickerInfo";
 import { AV_SEARCH, AV_INTERVAL, AV_SERIES_TYPE } from "../../api/constants";
-import { CircularProgress } from "@material-ui/core";
 
 const tickerInfoOptions = {
   indicatorList: ["RSI", "MACD"],
@@ -22,25 +21,16 @@ const useStyles = makeStyles(theme => ({
   },
   cardInfo: {
     marginTop: "50px"
-  },
-  entitySearchWrapper: {
-    position: "relative"
-  },
-  searchResultsLoading: {
-    position: "absolute",
-    zIndex: 2,
-    left: "50%",
-    top: "10%"
   }
 }));
 
 const Alerts = props => {
   const classes = useStyles();
   const [selectedTicker, setSelectedTicker] = useState();
-  const [loadingSearchResults, setLoadingSearchResults] = useState(false);
+  const [isLoadingSearchResults, setIsLoadingSearchResults] = useState(false);
 
   const showLoadingIndicator = () => {
-    setLoadingSearchResults(true);
+    setIsLoadingSearchResults(true);
   };
 
   const fetchResults = async searchString => {
@@ -53,7 +43,7 @@ const Alerts = props => {
         error
       );
     } finally {
-      setLoadingSearchResults(false);
+      setIsLoadingSearchResults(false);
     }
   };
 
@@ -69,25 +59,14 @@ const Alerts = props => {
         <Typography variant="title">Set Alerts</Typography>
       </Grid>
       <Divider className={classes.divider} />
-      <Grid
-        id="entitySearchWrapper"
-        item
-        className={classes.entitySearchWrapper}
-      >
-        {loadingSearchResults && (
-          <CircularProgress
-            size={30}
-            color="secondary"
-            className={classes.searchResultsLoading}
-          />
-        )}
+      <Grid item>
         <EntitySelect
           searchFnOnKeyPress={fetchResults}
           onSelect={handleSelectTicker}
           displayAttributes={[AV_SEARCH.SYMBOL, AV_SEARCH.NAME]}
+          isLoading={isLoadingSearchResults}
         />
       </Grid>
-
       <Grid item className={classes.tickerInfo}>
         {selectedTicker && (
           <TickerInfo ticker={selectedTicker} options={tickerInfoOptions} />
