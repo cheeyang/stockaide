@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import makeStyles from "@material-ui/styles/makeStyles";
 import EntitySelect from "./EntitySelect";
 import Divider from "@material-ui/core/Divider";
-import { fetchSymbolSearch } from "../../api/AlphaVantage";
+import {
+  fetchSymbolSearch,
+  fetchTickerRsi,
+  fetchTickerMacd,
+  fetchGenericIndicator,
+  fetchPrice
+} from "../../api/AlphaVantage";
 import TickerInfo from "../../components/TickerInfo";
 import { AV_SEARCH, AV_INTERVAL, AV_SERIES_TYPE } from "../../api/constants";
 
 const tickerInfoOptions = {
-  indicatorList: ["RSI", "MACD"],
+  indicatorList: ["RSI", "MACD", "Price"],
+  indicatorFetchFunctions: [fetchTickerRsi, fetchGenericIndicator, fetchPrice],
   interval: AV_INTERVAL.DAILY,
   seriesType: AV_SERIES_TYPE.OPEN,
   timePeriod: 20
@@ -50,8 +57,6 @@ const Alerts = props => {
   const handleSelectTicker = selectedTicker => {
     setSelectedTicker(selectedTicker);
   };
-
-  useEffect(() => {}, [selectedTicker]);
 
   return (
     <Grid container direction="column">

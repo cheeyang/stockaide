@@ -7,8 +7,6 @@ import Typography from "@material-ui/core/Typography";
 import makeStyles from "@material-ui/styles/makeStyles";
 import get from "lodash/get";
 import { AV_SEARCH } from "../api/constants";
-import { fetchTickerRsi } from "../api/AlphaVantage";
-import max from "lodash/max";
 import { CircularProgress } from "@material-ui/core";
 
 const useStyles = makeStyles(({ background }) => ({
@@ -24,38 +22,87 @@ const TickerInfo = props => {
   console.log("Ticker Symbol: ", symbol);
   const classes = useStyles();
   const [rsi, setRsi] = useState("");
-  const [isTickerLoading, setIsTickerLoading] = useState(false);
+
+  const [indicatorValues, setIndicatorValues] = useState({});
+  const [indicatorValue, setIndicatorValue] = useState([]); // [indicator, true/false]
+
+  const [indicatorLoadingStatuses, setIndicatorLoadingStatuses] = useState({});
+  const [loading, setLoading] = useState([]); // [indicator, true/false]
 
   useEffect(() => {
-    async function fetchTickerCallback() {
+    options.indicatorList.forEach(async (indicator, index) => {
+      setTimeout(() => setLoading([indicator, true]));
+      const fetchIndicator = options.indicatorFetchFunctions[index];
+      console.log("indicator: ", indicator);
       try {
-        setIsTickerLoading(true);
-        const rsiData = await fetchTickerRsi(symbol, options);
-        const latestDate = max(Object.keys(rsiData));
-        const latestRsi = get(rsiData, [latestDate, "RSI"]);
-        setRsi(latestRsi);
+        console.log(
+          "indicatorLoadingStatuses before resolved: ",
+          indicatorLoadingStatuses
+        );
+        const value = await fetchIndicator(symbol, options, indicator);
+        setTimeout(setIndicatorValue([indicator, value]));
       } catch (error) {
         console.error(error);
-        setRsi("N/A");
+        setTimeout(setIndicatorValue([indicator, "N/A"]));
       } finally {
-        setIsTickerLoading(false);
+        console.log(
+          "indicatorLoadingStatuses after resolved : ",
+          indicatorLoadingStatuses
+        );
+        setTimeout(setLoading([indicator, false]));
       }
-    }
-    fetchTickerCallback();
+    });
   }, [symbol, options]);
 
+  //synchronously set loading statuses
+  useEffect(() => {
+    setIndicatorLoadingStatuses({
+      ...indicatorLoadingStatuses,
+      [loading[0]]: loading[1]
+    });
+  }, [loading]);
+  //synchronously set indicator values
+  useEffect(() => {
+    setIndicatorValues({
+      ...indicatorValues,
+      [indicatorValue[0]]: indicatorValue[1]
+    });
+  }, [indicatorValue]);
+
+  useEffect(() => {
+    console.log("indicatorValues", indicatorValues);
+  }, [indicatorValues]);
+
+  useEffect(() => {
+    console.log("indicatorLoadingStatuses", indicatorLoadingStatuses);
+  }, [indicatorLoadingStatuses]);
+
+  console.log("indicatorLoadingStatuses");
   return (
     <Card raised className={classes.tickerCard}>
       <CardHeader title={get(ticker, "label")} />
       <CardContent>
-        <Typography variant="body2">
-          RSI :{" "}
-          {isTickerLoading ? (
-            <CircularProgress color="secondary" size={13} />
-          ) : (
-            rsi
-          )}
-        </Typography>
+        {options.indicatorList.map((indicator, i) => {
+          console.log("$$$indicator : ", indicator);
+          console.log(
+            "$$$indicatorLoadingStatuses : ",
+            indicatorLoadingStatuses
+          );
+          console.log(
+            "$$$indicatorLoadingStatuses[indicator]: ",
+            indicatorLoadingStatuses[indicator]
+          );
+          return (
+            <Typography id={`${indicator}-${i}`} variant="body2">
+              {`${indicator} : `}
+              {indicatorLoadingStatuses[indicator] ? ( //check 'then' for promise object
+                <CircularProgress color="secondary" size={12} />
+              ) : (
+                indicatorValues[indicator]
+              )}
+            </Typography>
+          );
+        })}
       </CardContent>
     </Card>
   );
