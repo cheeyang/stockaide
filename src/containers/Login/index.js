@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Button,
@@ -41,6 +41,16 @@ const Login = props => {
   const toggleShowPassword = toShow => {
     setShowPassword(!showPassword);
   };
+
+  useEffect(() => {
+    const loginButton = document.getElementById("login");
+    document.getElementById("password").addEventListener("keydown", event => {
+      if (event.keyCode === 13) {
+        loginButton.click();
+      }
+    });
+  }, []);
+
   return (
     <Grid container direction="column" justify="center" alignItems="center">
       <FormControl
@@ -68,7 +78,9 @@ const Login = props => {
           <FormHelperText error>Please Enter a Valid Password.</FormHelperText>
         )}
       </FormControl>
-      <Button onClick={handleLogin}>Click to login</Button>
+      <Button id="login" onClick={handleLogin}>
+        Click to login
+      </Button>
     </Grid>
   );
 };
