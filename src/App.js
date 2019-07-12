@@ -72,3 +72,16 @@ export default connect(
  * - Manage Notifications
  *
  */
+
+/**@todo */
+/**
+ * Retrieve multiple indicators, such as GLOBAL_QUOTE(Price & Vol), MACD,
+ *
+ * Save Alerts to Firestore
+ * Run Scheduled Functions using Google Cloud Platform to poll for selected tickers' alerts
+ * Send email when criteria is met, for buy/sell action
+ *
+ * Login Flow using Firebase Authentication
+ * Load Alerts from firestore depending on user
+ *
+ */
