@@ -1,12 +1,12 @@
 import React from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import Hidden from "@material-ui/core/Hidden";
 import Navbar from "../components/Navbar";
+import makeStyles from "@material-ui/styles/makeStyles";
 
-const styles = ({ background, palette, divider }) => ({
+const useStyles = makeStyles(({ background, palette, divider }) => ({
   appHeader: {
     background: background.appBars
   },
@@ -18,10 +18,11 @@ const styles = ({ background, palette, divider }) => ({
   headerHeight: {
     flexGrow: 0.7
   }
-});
+}));
 
 const AppHeader = props => {
-  const { classes, hidden } = props;
+  const { hidden } = props;
+  const classes = useStyles();
 
   if (hidden) return null;
 
@@ -62,7 +63,7 @@ const AppHeader = props => {
   );
 };
 
-export default withStyles(styles)(AppHeader);
+export default AppHeader;
 AppHeader.propTypes = {
   hidden: PropTypes.bool.isRequired,
   classes: PropTypes.object.isRequired

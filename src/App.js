@@ -1,7 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import "./App.css";
-import withStyles from "@material-ui/core/styles/withStyles";
 import AppHeader from "./containers/AppHeader";
 import AppFooter from "./containers/AppFooter";
 import AppContent from "./containers/AppContent";
@@ -10,15 +9,17 @@ import { select } from "./store";
 import { BrowserRouter as Router } from "react-router-dom";
 import FullScreenSpinner from "./components/FullScreenSpinner";
 import isEmpty from "lodash/isEmpty";
+import makeStyles from "@material-ui/styles/makeStyles";
 
-const styles = {
+const useStyles = makeStyles(theme => ({
   appRoot: {
     height: "100vh"
   }
-};
+}));
 
 const App = props => {
-  const { classes, user, isLoading } = props;
+  const { user, isLoading } = props;
+  const classes = useStyles();
   return (
     <Grid container direction="column" className={classes.appRoot}>
       <Router>
@@ -43,7 +44,7 @@ const mapDispatch = dispatch => ({ dispatch });
 export default connect(
   mapState,
   mapDispatch
-)(withStyles(styles)(App));
+)(App);
 
 /**
  * Search? Should this be forever in app bar?
