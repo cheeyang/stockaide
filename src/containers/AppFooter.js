@@ -1,21 +1,19 @@
 import React from "react";
 import { blueGrey } from "@material-ui/core/colors";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
-import makeStyles from "@material-ui/styles/makeStyles";
 
-const useStyles = makeStyles(({ background }) => ({
+const styles = ({ background }) => ({
   appFooter: {
     background: background.appBars
   },
   footerHeight: {
     flexGrow: 0.5
   }
-}));
-
+});
 const AppFooter = props => {
-  const { hidden } = props;
-  const classes = useStyles();
+  const { classes, hidden } = props;
 
   if (hidden) return null;
 
@@ -29,7 +27,7 @@ const AppFooter = props => {
   );
 };
 
-export default AppFooter;
+export default withStyles(styles)(AppFooter);
 AppFooter.propTypes = {
   hidden: PropTypes.bool.isRequired,
   classes: PropTypes.object.isRequired
