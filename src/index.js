@@ -10,22 +10,15 @@ import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import getTheme from "./theme";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import appConfig from "./config/appConfig";
-import { StylesProvider, createGenerateClassName } from "@material-ui/styles";
-
-const generateClassName = createGenerateClassName({
-  productionPrefix: "prod-"
-});
 
 ReactDOM.render(
   <Provider store={store}>
-    <StylesProvider generateClassName={generateClassName}>
-      <CssBaseline />
-      <MuiThemeProvider theme={getTheme(appConfig.theme)}>
-        <ThemeProvider theme={getTheme(appConfig.theme)}>
-          <App />
-        </ThemeProvider>
-      </MuiThemeProvider>
-    </StylesProvider>
+    <CssBaseline />
+    <MuiThemeProvider theme={getTheme(appConfig.theme)}>
+      <ThemeProvider theme={getTheme(appConfig.theme)}>
+        <App />
+      </ThemeProvider>
+    </MuiThemeProvider>
   </Provider>,
 
   document.getElementById("root")
