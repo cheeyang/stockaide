@@ -21,7 +21,6 @@ const TickerInfo = props => {
   const symbol = get(ticker, ["value", AV_SEARCH.SYMBOL]);
   console.log("Ticker Symbol: ", symbol);
   const classes = useStyles();
-  const [rsi, setRsi] = useState("");
 
   const [indicatorValues, setIndicatorValues] = useState({});
   const [indicatorValue, setIndicatorValue] = useState([]); // [indicator, true/false]

@@ -1,21 +1,21 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import withStyles from "@material-ui/core/styles/withStyles";
 import { withRouter } from "react-router-dom";
 import appConfig from "../config/appConfig";
 import classNames from "classnames";
+import makeStyles from "@material-ui/styles/makeStyles";
 
-const styles = ({ divider }) => ({
+const useStyles = makeStyles(({ divider }) => ({
   navbarItem: {
     padding: "5px"
   },
   appendDivider: {}
-});
+}));
 
 const Navbar = props => {
   const { navbarItems } = appConfig;
-  const { classes } = props;
+  const classes = useStyles();
 
   const handleClickNavbarItem = item => event => {
     const { history } = props;
@@ -43,4 +43,4 @@ const Navbar = props => {
   );
 };
 
-export default withStyles(styles)(withRouter(Navbar));
+export default withRouter(Navbar);

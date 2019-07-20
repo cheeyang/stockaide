@@ -1,13 +1,13 @@
 import React from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Login from "../containers/Login";
 import Dashboard from "../containers/Dashboard";
 import PropTypes from "prop-types";
 import Alerts from "./Alerts";
+import makeStyles from "@material-ui/styles/makeStyles";
 
-const styles = ({ background }) => ({
+const useStyles = makeStyles(({ background }) => ({
   appContent: {
     background: background.appContent,
     padding: "20px"
@@ -15,9 +15,10 @@ const styles = ({ background }) => ({
   contentHeight: {
     flexGrow: 8.8
   }
-});
+}));
 const AppContent = props => {
-  const { classes, user } = props;
+  const { user } = props;
+  const classes = useStyles();
 
   const renderRoutes = () => {
     if (!user) {
@@ -46,7 +47,7 @@ const AppContent = props => {
     </Grid>
   );
 };
-export default withStyles(styles)(AppContent);
+export default AppContent;
 AppContent.propTypes = {
   user: PropTypes.string
 };
