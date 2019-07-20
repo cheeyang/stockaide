@@ -6,8 +6,11 @@ import {
   blue,
   deepOrange,
   grey,
-  lightBlue,
-  cyan
+  cyan,
+  brown,
+  lime,
+  lightGreen,
+  teal
 } from "@material-ui/core/colors";
 
 /**
@@ -16,7 +19,10 @@ import {
 const getTheme = theme =>
   createMuiTheme({
     palette: {
-      type: theme
+      type: theme,
+      secondary: {
+        main: grey[500]
+      }
     },
     typography: {
       fontSize: 12,
@@ -28,14 +34,19 @@ const getTheme = theme =>
     overrides: {
       MuiButton: {
         root: {
-          backgroundColor: theme === "dark" ? blueGrey[700] : lightBlue[200]
+          backgroundColor: theme === "dark" ? blueGrey[700] : cyan[200]
         }
       }
     },
     // Custom Theme Variables
     background: {
-      appBars: theme === "dark" ? blueGrey[700] : lightBlue[200],
-      appContent: theme === "dark" ? blueGrey[900] : grey[50]
+      appBars: theme === "dark" ? blueGrey[700] : cyan[200],
+      appContent: theme === "dark" ? blueGrey[900] : grey[50],
+      cards: theme === "dark" ? teal["A700"] : lightGreen[50]
+    },
+    divider: {
+      primary: theme === "dark" ? grey[100] : grey[800],
+      secondary: theme === "dark" ? grey[300] : grey[600]
     },
     status: {
       success: green[300],
