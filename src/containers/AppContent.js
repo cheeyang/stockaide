@@ -1,11 +1,12 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { Switch, Route, Redirect } from "react-router-dom";
-import Login from "../containers/Login";
-import Dashboard from "../containers/Dashboard";
+import Login from "./Login";
+import Dashboard from "./Dashboard";
 import PropTypes from "prop-types";
 import Alerts from "./Alerts";
 import makeStyles from "@material-ui/styles/makeStyles";
+import Trade from "./Trade";
 
 const useStyles = makeStyles(({ background }) => ({
   appContent: {
@@ -30,6 +31,7 @@ const AppContent = props => {
         <Route exact path="/login" component={Login} />
         <Route exact path="/dashboard" component={Dashboard} />
         <Route exact path="/alerts" component={Alerts} />
+        <Route exact path="/trade" component={Trade} />
       </React.Fragment>
     );
   };

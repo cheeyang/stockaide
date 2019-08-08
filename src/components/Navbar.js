@@ -8,7 +8,8 @@ import makeStyles from "@material-ui/styles/makeStyles";
 
 const useStyles = makeStyles(({ divider }) => ({
   navbarItem: {
-    padding: "5px"
+    padding: "5px",
+    cursor: "pointer"
   },
   appendDivider: {}
 }));
