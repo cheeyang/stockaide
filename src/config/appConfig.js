@@ -12,6 +12,11 @@ const config = {
       id: "alerts",
       label: "Alerts",
       route: "/alerts"
+    },
+    {
+      id: "trade",
+      label: "Trade",
+      route: "/trade"
     }
   ]
 };
