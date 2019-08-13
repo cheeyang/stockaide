@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -6,7 +6,9 @@ import makeStyles from "@material-ui/styles/makeStyles";
 import Divider from "@material-ui/core/Divider";
 import { checkAuthenticationStatus } from "../../api/Ibkr";
 import isEmpty from "lodash/isEmpty";
+import { connect } from "react-redux";
 import { CircularProgress } from "@material-ui/core";
+import { select } from "../../store";
 
 const useStyles = makeStyles(theme => ({
   divider: {
@@ -20,7 +22,8 @@ const useStyles = makeStyles(theme => ({
 const Trade = props => {
   const classes = useStyles();
   const [pendingItems, setPendingItems] = useState([]);
-  const [ibkrAuth, setIbkrAuth] = useState(undefined);
+
+  const { ibkrAuth, dispatch } = props;
 
   const handleClick = async () => {
     console.log("authenticate clicked!");
@@ -34,7 +37,7 @@ const Trade = props => {
     } finally {
       setPendingItems(pendingItems.filter(item => item !== "authStatus"));
     }
-    setIbkrAuth(auth);
+    dispatch.auth.setIbkrAuth(auth);
   };
 
   const renderAuthStatus = () => {
@@ -70,4 +73,15 @@ const Trade = props => {
   );
 };
 
-export default Trade;
+const mapState = state => ({
+  ibkrAuth: select.auth.getIbkrAuth(state)
+});
+
+const mapDispatch = dispatch => ({
+  dispatch
+});
+
+export default connect(
+  mapState,
+  mapDispatch
+)(Trade);

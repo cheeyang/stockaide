@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import "./App.css";
 import AppHeader from "./containers/AppHeader";
@@ -10,6 +10,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import FullScreenSpinner from "./components/FullScreenSpinner";
 import isEmpty from "lodash/isEmpty";
 import makeStyles from "@material-ui/styles/makeStyles";
+import { tickle } from "./api/Ibkr";
 
 const useStyles = makeStyles(theme => ({
   appRoot: {
@@ -18,8 +19,19 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const App = props => {
-  const { user, isLoading } = props;
+  const { user, isLoading, ibkrAuth } = props;
   const classes = useStyles();
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      console.log("executing every minute... ibkrAuth status: ", ibkrAuth);
+      tickle();
+    }, 60000);
+    return () => {
+      clearInterval(timerId);
+    };
+  }, []);
+
   return (
     <Grid container direction="column" className={classes.appRoot}>
       <Router>
@@ -36,7 +48,8 @@ const App = props => {
 
 const mapState = state => ({
   user: select.auth.getUser(state),
-  isLoading: !isEmpty(select.app.getLoadingItems(state))
+  isLoading: !isEmpty(select.app.getLoadingItems(state)),
+  ibkrAuth: select.auth.getIbkrAuth(state)
 });
 
 const mapDispatch = dispatch => ({ dispatch });

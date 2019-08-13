@@ -3,8 +3,14 @@ const setUser = (state, user) => ({
   user
 });
 
+const setIbkrAuth = (state, ibkrAuth) => ({
+  ...state,
+  ibkrAuth
+});
+
 const reducers = {
-  setUser
+  setUser,
+  setIbkrAuth
 };
 
 export default reducers;

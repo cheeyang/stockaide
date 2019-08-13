@@ -23,3 +23,9 @@ export const checkAuthenticationStatus = async () => {
   });
   return resultSet;
 };
+
+export const tickle = () => {
+  const url = "/tickle";
+  console.log("tickling api to keep session open...");
+  ibkrApi.get(url);
+};
