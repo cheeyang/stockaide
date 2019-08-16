@@ -20,3 +20,14 @@ export const AV_SERIES_TYPE = {
   HIGH: "high",
   LOW: "low"
 };
+
+export const IBKR_SEARCH_RES = {
+  CON_ID: "conid",
+  CPNY_HEADER: "companyHeader",
+  CPNY_NAME: "companyName",
+  SYMBOL: "symbol",
+  DESC: "description",
+  OPT: "opt",
+  WAR: "war",
+  SECTIONS: "sections"
+};

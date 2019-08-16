@@ -114,5 +114,7 @@ TickerInfo.propTypes = {
     label: PropTypes.string.isRequired,
     value: PropTypes.object.isRequired
   }).isRequired,
-  indicatorList: PropTypes.arrayOf("string")
+  options: PropTypes.shape({
+    indicatorList: PropTypes.arrayOf("string")
+  })
 };

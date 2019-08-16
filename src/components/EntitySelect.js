@@ -39,17 +39,32 @@ const EntitySelect = props => {
   const [searchString, setSearchString] = useState("");
   const classes = useStyles();
 
-  const getOptions = resultList =>
-    resultList.map(result => {
+  const getOptions = resultList => {
+    console.log("resultList::: ", resultList);
+    return resultList.map(result => {
       let option = {};
       option.value = cloneDeep(result);
-      option.label = displayAttributes.reduce((accumulator, attr, index) => {
-        return index === 0
-          ? `${result[attr]}`
-          : `${accumulator} | ${result[attr]}`;
-      }, "");
+      console.log("displayAttributes: ", displayAttributes);
+      if (displayAttributes.length === 1) {
+        option.label = result.displayAttributes[0];
+      } else {
+        let isFirstValue = true;
+        option.label = displayAttributes.reduce((accumulator, attr) => {
+          if (!result[attr]) {
+            return "";
+          }
+          if (isFirstValue) {
+            isFirstValue = false;
+            return `${result[attr]}`;
+          } else {
+            return `${accumulator} | ${result[attr]}`;
+          }
+        }, "");
+      }
+      console.log("Option: ", option);
       return option;
     });
+  };
 
   const filterResults = (masterEntityList, searchStringLC) =>
     masterEntityList.filter(entity =>
@@ -66,15 +81,22 @@ const EntitySelect = props => {
 
   async function getSearchResults() {
     let newFilteredList;
-    if (props.searchFnOnKeyPress) {
-      console.log("calling search function API...");
-      newFilteredList = await props.searchFnOnKeyPress(searchString);
-    } else {
-      console.log("filtering on front end...");
-      const searchStringLC = searchString.toLowerCase();
-      newFilteredList = filterResults(masterEntityList, searchStringLC);
+    try {
+      if (props.searchFnOnKeyPress) {
+        console.log("calling search function API...");
+        newFilteredList = await props.searchFnOnKeyPress(searchString);
+      } else {
+        console.log("filtering on front end...");
+        const searchStringLC = searchString.toLowerCase();
+        newFilteredList = filterResults(masterEntityList, searchStringLC);
+      }
+    } catch (error) {
+      console.error("filteredList assign failed, ", error);
+      newFilteredList = [];
     }
+    console.log("EntitySelect: newFilteredList: ", newFilteredList);
     const options = getOptions(newFilteredList);
+    console.log("options generated: ", options);
     setSelectableOptions(options);
   }
 
@@ -98,6 +120,9 @@ const EntitySelect = props => {
     }
   }, [searchString, isDebouncing]);
 
+  /**
+   * @param {object} selectedOption
+   */
   const handleSelect = selectedOption => {
     props.onSelect(selectedOption);
     setSelectedOption(selectedOption);
@@ -119,7 +144,7 @@ const EntitySelect = props => {
         inputValue={!isEmpty(searchString) ? searchString : undefined}
         onChange={handleSelect}
         onInputChange={handleInputChange}
-        placeholder="Seach by Company Name or Ticker Symbol"
+        placeholder="Seach by Company Name/Symbol"
         styles={selectStyles}
       />
     </Grid>

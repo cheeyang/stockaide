@@ -4,11 +4,18 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import makeStyles from "@material-ui/styles/makeStyles";
 import Divider from "@material-ui/core/Divider";
-import { checkAuthenticationStatus } from "../../api/Ibkr";
+import classNames from "classnames";
+import {
+  checkAuthenticationStatus,
+  fetchTickerBySymbol,
+  fetchTickerByName
+} from "../../api/Ibkr";
 import isEmpty from "lodash/isEmpty";
 import { connect } from "react-redux";
 import { CircularProgress } from "@material-ui/core";
 import { select } from "../../store";
+import EntitySelect from "../../components/EntitySelect";
+import { IBKR_SEARCH_RES } from "../../api/constants";
 
 const useStyles = makeStyles(theme => ({
   divider: {
@@ -16,12 +23,20 @@ const useStyles = makeStyles(theme => ({
   },
   authContainer: {
     width: "50%"
+  },
+  entitySelect: {
+    width: "100%"
+  },
+  marginTop: {
+    marginTop: "20px"
   }
 }));
 
 const Trade = props => {
   const classes = useStyles();
   const [pendingItems, setPendingItems] = useState([]);
+  const [selectedTicker, setSelectedTicker] = useState();
+  const [isLoadingSearchResults, setIsLoadingSearchResults] = useState(false);
 
   const { ibkrAuth, dispatch } = props;
 
@@ -45,7 +60,32 @@ const Trade = props => {
       return <CircularProgress color="primary" size={14} />;
     }
     if (!ibkrAuth) return "Not Authenticated";
-    return ibkrAuth.toString();
+    if (ibkrAuth === true) return "Authenticated!";
+    return JSON.stringify(ibkrAuth);
+  };
+
+  /**@todo find out why this only works for symbol and not company name */
+  const fetchResults = async searchString => {
+    try {
+      setIsLoadingSearchResults(true);
+      const promiseArray = await Promise.all([
+        fetchTickerBySymbol(searchString),
+        fetchTickerByName(searchString)
+      ]);
+      console.log("promiseArray", promiseArray);
+      return promiseArray[0];
+    } catch (error) {
+      console.error(
+        `Error: unable to fetch search results for symbol: "${searchString}".\n`,
+        error
+      );
+    } finally {
+      setIsLoadingSearchResults(false);
+    }
+  };
+
+  const handleSelectTicker = selectedTicker => {
+    setSelectedTicker(selectedTicker);
   };
 
   return (
@@ -63,10 +103,26 @@ const Trade = props => {
           direction="column"
           className={classes.authContainer}
         >
-          <Button onClick={handleClick}>Check Authentication</Button>
+          <Button className={classes.marginTop} onClick={handleClick}>
+            Check Authentication
+          </Button>
           <Typography variant="body1">
             Authentication status: {renderAuthStatus()}
           </Typography>
+          <Grid
+            item
+            className={classNames(classes.entitySelect, classes.marginTop)}
+          >
+            <EntitySelect
+              searchFnOnKeyPress={fetchResults}
+              onSelect={handleSelectTicker}
+              displayAttributes={[
+                IBKR_SEARCH_RES.SYMBOL,
+                IBKR_SEARCH_RES.CPNY_HEADER
+              ]}
+              isLoading={isLoadingSearchResults}
+            />
+          </Grid>
         </Grid>
       </Grid>
     </Grid>

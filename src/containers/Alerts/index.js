@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import makeStyles from "@material-ui/styles/makeStyles";
-import EntitySelect from "./EntitySelect";
+import EntitySelect from "../../components/EntitySelect";
 import Divider from "@material-ui/core/Divider";
 import {
   fetchSymbolSearch,
