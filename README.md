@@ -10,7 +10,7 @@ Windows: Add
 into Chrome shortcut -> properties -> target
 Mac:
 Type into Terminal
-[open -a Google\ Chrome --args --disable-web-security --user-data-dir=""]
+[open -a Google\ Chrome --args --disable-web-security --user-data-dir]
 
 ## Available Scripts
 
