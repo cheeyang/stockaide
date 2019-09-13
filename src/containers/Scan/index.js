@@ -14,7 +14,7 @@ const Scan = props => {
 
   return (
     <Grid container justify="center" alignItems="center" direction="column">
-      Scan Page
+      <Typography>Scan Page</Typography>
       <Button onClick={handleClick}>Hit API</Button>
       <Typography>{JSON.stringify(scanResults, undefined, 2)}</Typography>
     </Grid>

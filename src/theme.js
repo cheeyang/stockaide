@@ -39,6 +39,9 @@ const getTheme = theme =>
       fontSize: 12,
       title: {
         color: theme === "dark" ? cyan[50] : blue[800]
+      },
+      body1: {
+        color: theme === "dark" ? cyan[50] : blue[800]
       }
     },
     //Overrrides
@@ -46,6 +49,11 @@ const getTheme = theme =>
       MuiButton: {
         root: {
           backgroundColor: theme === "dark" ? blueGrey[700] : cyan[200]
+        }
+      },
+      MuiTypography: {
+        root: {
+          color: theme === "dark" ? cyan[50] : blue[800]
         }
       }
     }
