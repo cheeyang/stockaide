@@ -17,6 +17,11 @@ const config = {
       id: "trade",
       label: "Trade",
       route: "/trade"
+    },
+    {
+      id: "scan",
+      label: "Scan",
+      route: "/scan"
     }
   ]
 };

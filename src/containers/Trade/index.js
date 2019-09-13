@@ -8,37 +8,38 @@ import classNames from "classnames";
 import {
   checkAuthenticationStatus,
   fetchTickerBySymbol,
-  fetchTickerByName
+  fetchTickerByName,
+  fetchTickerHistory
 } from "../../api/Ibkr";
-import isEmpty from "lodash/isEmpty";
 import { connect } from "react-redux";
 import { CircularProgress } from "@material-ui/core";
 import { select } from "../../store";
 import EntitySelect from "../../components/EntitySelect";
 import { IBKR_SEARCH_RES } from "../../api/constants";
+import TickerInfo from "../../components/TickerInfo";
+import get from "lodash/get";
 
 const useStyles = makeStyles(theme => ({
   divider: {
     margin: "5px 0 15px 0"
   },
   authContainer: {
-    width: "50%"
+    width: "100%"
   },
   entitySelect: {
-    width: "100%"
+    width: "80%"
   },
   marginTop: {
     marginTop: "20px"
   }
 }));
 
-const Trade = props => {
+const Trade = ({ ibkrAuth, dispatch }) => {
   const classes = useStyles();
   const [pendingItems, setPendingItems] = useState([]);
   const [selectedTicker, setSelectedTicker] = useState();
   const [isLoadingSearchResults, setIsLoadingSearchResults] = useState(false);
-
-  const { ibkrAuth, dispatch } = props;
+  const [tickerInfo, setTickerHistory] = useState({});
 
   const handleClick = async () => {
     console.log("authenticate clicked!");
@@ -84,8 +85,14 @@ const Trade = props => {
     }
   };
 
+  const retrieveTickerHistory = async conid => {
+    const res = await fetchTickerHistory(conid);
+    setTickerHistory(res && res.data);
+  };
+
   const handleSelectTicker = selectedTicker => {
     setSelectedTicker(selectedTicker);
+    retrieveTickerHistory(get(selectedTicker, "value.conid"));
   };
 
   return (
@@ -122,6 +129,9 @@ const Trade = props => {
               ]}
               isLoading={isLoadingSearchResults}
             />
+          </Grid>
+          <Grid item>
+            <TickerInfo selectedTicker={selectedTicker} />
           </Grid>
         </Grid>
       </Grid>

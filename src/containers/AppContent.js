@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import Alerts from "./Alerts";
 import makeStyles from "@material-ui/styles/makeStyles";
 import Trade from "./Trade";
+import Scan from "./Scan";
 
 const useStyles = makeStyles(({ palette: { custom } }) => ({
   appContent: {
@@ -14,7 +15,9 @@ const useStyles = makeStyles(({ palette: { custom } }) => ({
     padding: "20px"
   },
   contentHeight: {
-    flexGrow: 8.8
+    flexGrow: 1,
+    height: "88vh",
+    overflow: "scroll"
   }
 }));
 const AppContent = props => {
@@ -32,6 +35,7 @@ const AppContent = props => {
         <Route exact path="/dashboard" component={Dashboard} />
         <Route exact path="/alerts" component={Alerts} />
         <Route exact path="/trade" component={Trade} />
+        <Route exact path="/scan" component={Scan} />
       </React.Fragment>
     );
   };

@@ -16,7 +16,7 @@ const useStyles = makeStyles(({ palette: { custom } }) => ({
     borderColor: custom.primaryDivider
   },
   headerHeight: {
-    flexGrow: 0.7
+    height: "7vh"
   }
 }));
 

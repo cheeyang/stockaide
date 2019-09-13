@@ -73,6 +73,44 @@ export const fetchTickerByName = async value => {
   return get(resultSet, "data", []);
 };
 
+export const fetchTickerHistory = async conid => {
+  console.log("calling api for ticker INFO");
+  const url = "/iserver/marketdata/history";
+  let resultSet;
+  try {
+    resultSet = await ibkrApi.get(
+      url,
+      { params: { conid, period: "1y", bar: "1w" } },
+      { timeout: 5000 }
+    );
+  } catch (err) {
+    console.error("error fetching by name : ", err);
+  }
+  console.log("returning resultset: ", resultSet);
+  return get(resultSet, "data", []);
+};
+
+/**@todo Allow user to select from list of INSTRUMENT, TYPE, etc. by calling /iserver/scanner/params */
+export const hardScan = async () => {
+  const url = "/iserver/scanner/run";
+  let resultSet;
+  try {
+    resultSet = await ibkrApi.post(
+      url,
+      {
+        instrument: "STOCK.HK",
+        location: "STK.HK.SEHK",
+        type: "TOP_PERC_GAIN"
+      },
+      { timeout: 5000 }
+    );
+  } catch (err) {
+    console.error("error fetching by name : ", err);
+  }
+  console.log("returning resultset: ", resultSet);
+  return get(resultSet, "data", []);
+};
+
 /**@todo contract info, used for prefilling orders before submission */
 // export const fetchContractInfo = async conId => {
 //   const url = `/iserver/contract/${conId}/info`;

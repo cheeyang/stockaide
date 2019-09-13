@@ -11,7 +11,7 @@ import {
   fetchGenericIndicator,
   fetchPrice
 } from "../../api/AlphaVantage";
-import TickerInfo from "../../components/TickerInfo";
+import TickerInfoAsync from "../../components/TickerInfoAsync";
 import { AV_SEARCH, AV_INTERVAL, AV_SERIES_TYPE } from "../../api/constants";
 
 const tickerInfoOptions = {
@@ -28,6 +28,9 @@ const useStyles = makeStyles(theme => ({
   },
   cardInfo: {
     marginTop: "50px"
+  },
+  entitySelect: {
+    width: "100%"
   }
 }));
 
@@ -64,7 +67,7 @@ const Alerts = props => {
         <Typography variant="title">Set Alerts</Typography>
       </Grid>
       <Divider className={classes.divider} />
-      <Grid item>
+      <Grid item className={classes.entitySelect}>
         <EntitySelect
           searchFnOnKeyPress={fetchResults}
           onSelect={handleSelectTicker}
@@ -74,7 +77,10 @@ const Alerts = props => {
       </Grid>
       <Grid item className={classes.tickerInfo}>
         {selectedTicker && (
-          <TickerInfo ticker={selectedTicker} options={tickerInfoOptions} />
+          <TickerInfoAsync
+            ticker={selectedTicker}
+            options={tickerInfoOptions}
+          />
         )}
       </Grid>
     </Grid>

@@ -14,7 +14,8 @@ import { tickle } from "./api/Ibkr";
 
 const useStyles = makeStyles(theme => ({
   appRoot: {
-    height: "100vh"
+    height: "100vh",
+    width: "100vw"
   }
 }));
 
@@ -73,6 +74,9 @@ export default connect(
  * - Chart
  * - Order
  * - Order Status
+ *
+ * Scanner
+ * - Scan For ConIds Based On Criteria
  *
  * Alerts
  * - Manage Alerts

@@ -9,7 +9,7 @@ const useStyles = makeStyles(({ palette: { custom } }) => ({
     background: custom.appBars
   },
   footerHeight: {
-    flexGrow: 0.5
+    height: "5vh"
   }
 }));
 
