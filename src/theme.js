@@ -7,8 +7,6 @@ import {
   deepOrange,
   grey,
   cyan,
-  brown,
-  lime,
   lightGreen,
   teal
 } from "@material-ui/core/colors";
@@ -22,6 +20,19 @@ const getTheme = theme =>
       type: theme,
       secondary: {
         main: grey[500]
+      },
+      custom: {
+        appBars: theme === "dark" ? blueGrey[700] : cyan[200],
+        appContent: theme === "dark" ? blueGrey[900] : grey[50],
+        cards: theme === "dark" ? teal["A700"] : lightGreen[50],
+        primaryDivider: theme === "dark" ? grey[100] : grey[800],
+        secondaryDivider: theme === "dark" ? grey[300] : grey[600],
+        status: {
+          success: green[300],
+          pending: blue[400],
+          warning: deepOrange[500],
+          error: red[500]
+        }
       }
     },
     typography: {
@@ -37,22 +48,6 @@ const getTheme = theme =>
           backgroundColor: theme === "dark" ? blueGrey[700] : cyan[200]
         }
       }
-    },
-    // Custom Theme Variables
-    background: {
-      appBars: theme === "dark" ? blueGrey[700] : cyan[200],
-      appContent: theme === "dark" ? blueGrey[900] : grey[50],
-      cards: theme === "dark" ? teal["A700"] : lightGreen[50]
-    },
-    divider: {
-      primary: theme === "dark" ? grey[100] : grey[800],
-      secondary: theme === "dark" ? grey[300] : grey[600]
-    },
-    status: {
-      success: green[300],
-      pending: blue[400],
-      warning: deepOrange[500],
-      error: red[500]
     }
   });
 

@@ -4,9 +4,9 @@ import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 import makeStyles from "@material-ui/styles/makeStyles";
 
-const useStyles = makeStyles(({ background }) => ({
+const useStyles = makeStyles(({ palette: { custom } }) => ({
   appFooter: {
-    background: background.appBars
+    background: custom.appBars
   },
   footerHeight: {
     flexGrow: 0.5

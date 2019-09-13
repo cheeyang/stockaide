@@ -9,10 +9,10 @@ import get from "lodash/get";
 import { AV_SEARCH } from "../api/constants";
 import { CircularProgress } from "@material-ui/core";
 
-const useStyles = makeStyles(({ background }) => ({
+const useStyles = makeStyles(({ palette: { custom } }) => ({
   tickerCard: {
     marginTop: "100px",
-    backgroundColor: background.cards
+    backgroundColor: custom.cards
   }
 }));
 

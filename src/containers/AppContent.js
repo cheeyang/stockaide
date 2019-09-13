@@ -8,9 +8,9 @@ import Alerts from "./Alerts";
 import makeStyles from "@material-ui/styles/makeStyles";
 import Trade from "./Trade";
 
-const useStyles = makeStyles(({ background }) => ({
+const useStyles = makeStyles(({ palette: { custom } }) => ({
   appContent: {
-    background: background.appContent,
+    background: custom.appContent,
     padding: "20px"
   },
   contentHeight: {
