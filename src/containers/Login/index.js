@@ -30,6 +30,7 @@ const Login = props => {
     if (password === process.env.REACT_APP_ADMIN_PASSWORD) {
       props.dispatch.auth.setUser("Guest");
       props.history.push("/dashboard");
+      console.log("pushing dashboard");
     } else {
       setIsPasswordError(true);
     }

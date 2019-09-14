@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
+import { MuiThemeProvider } from "@material-ui/core";
+import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import loadTheme from "./theme";
 import "./App.css";
 import AppHeader from "./containers/AppHeader";
 import AppFooter from "./containers/AppFooter";
 import AppContent from "./containers/AppContent";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { select } from "./store";
 import { BrowserRouter as Router } from "react-router-dom";
 import FullScreenSpinner from "./components/FullScreenSpinner";
@@ -20,7 +23,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const App = props => {
-  const { user, isLoading, ibkrAuth } = props;
   const classes = useStyles();
 
   useEffect(() => {
@@ -33,32 +35,30 @@ const App = props => {
     };
   }, []);
 
+  const theme = useSelector(select.app.getTheme);
+  const user = useSelector(select.auth.getUser);
+  const isLoading = !isEmpty(useSelector(select.app.getLoadingItems));
+  const ibkrAuth = useSelector(select.auth.getIbkrAuth);
+
   return (
-    <Grid container direction="column" className={classes.appRoot}>
-      <Router>
-        {/* TODO: Set up navbar within header for navigation within menu item clicked in drawer*/}
-        <FullScreenSpinner hidden={!isLoading} />
-        <AppHeader hidden={!user} />
-        <AppContent user={user} />
-        <AppFooter hidden={!user} />
-        {/* TODO: Set up Drawer Component for navigation to Portfolio, Trade, */}
-      </Router>
-    </Grid>
+    <MuiThemeProvider theme={loadTheme(theme)}>
+      <ThemeProvider theme={loadTheme(theme)}>
+        <Grid container direction="column" className={classes.appRoot}>
+          <Router>
+            {/* TODO: Set up navbar within header for navigation within menu item clicked in drawer*/}
+            <FullScreenSpinner hidden={!isLoading} />
+            <AppHeader hidden={!user} />
+            <AppContent user={user} />
+            <AppFooter hidden={!user} />
+            {/* TODO: Set up Drawer Component for navigation to Portfolio, Trade, */}
+          </Router>
+        </Grid>
+      </ThemeProvider>
+    </MuiThemeProvider>
   );
 };
 
-const mapState = state => ({
-  user: select.auth.getUser(state),
-  isLoading: !isEmpty(select.app.getLoadingItems(state)),
-  ibkrAuth: select.auth.getIbkrAuth(state)
-});
-
-const mapDispatch = dispatch => ({ dispatch });
-
-export default connect(
-  mapState,
-  mapDispatch
-)(App);
+export default App;
 
 /**
  * Search? Should this be forever in app bar?

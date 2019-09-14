@@ -13,11 +13,13 @@ const useStyles = makeStyles(({ palette: { custom } }) => ({
   tickerCard: {
     marginTop: "100px",
     backgroundColor: custom.cards
+  },
+  spinner: {
+    color: custom.spinner
   }
 }));
 
-const TickerInfoAsync = props => {
-  const { ticker, options } = props;
+const TickerInfoAsync = ({ ticker, options }) => {
   const symbol = get(ticker, ["value", AV_SEARCH.SYMBOL]);
   console.log("Ticker Symbol: ", symbol);
   const classes = useStyles();
@@ -95,7 +97,11 @@ const TickerInfoAsync = props => {
             <Typography id={`${indicator}-${i}`} variant="body2">
               {`${indicator} : `}
               {indicatorLoadingStatuses[indicator] ? ( //check 'then' for promise object
-                <CircularProgress color="secondary" size={12} />
+                <CircularProgress
+                  color="secondary"
+                  size={12}
+                  classes={{ root: classes.spinner }}
+                />
               ) : (
                 indicatorValues[indicator]
               )}

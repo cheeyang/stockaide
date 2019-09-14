@@ -14,7 +14,7 @@ import {
 /**
  * theme: 'light' or 'dark'
  */
-const getTheme = theme =>
+const loadTheme = theme =>
   createMuiTheme({
     palette: {
       type: theme,
@@ -25,6 +25,7 @@ const getTheme = theme =>
         appBars: theme === "dark" ? blueGrey[700] : cyan[200],
         appContent: theme === "dark" ? blueGrey[900] : grey[50],
         cards: theme === "dark" ? teal["A700"] : lightGreen[50],
+        spinner: blue[800],
         primaryDivider: theme === "dark" ? grey[100] : grey[800],
         secondaryDivider: theme === "dark" ? grey[300] : grey[600],
         status: {
@@ -59,4 +60,4 @@ const getTheme = theme =>
     }
   });
 
-export default getTheme;
+export default loadTheme;

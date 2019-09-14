@@ -1,7 +1,4 @@
-import { THEMES } from "../constants";
-
 const config = {
-  theme: THEMES.DARK,
   navbarItems: [
     {
       id: "dashboard",

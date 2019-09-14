@@ -4,5 +4,6 @@ export const THEMES = {
 };
 
 export const INITIAL_STATE = {
-  loadingItems: []
+  loadingItems: [],
+  theme: THEMES.LIGHT
 };
