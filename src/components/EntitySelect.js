@@ -7,6 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Select from "react-select";
 import PropTypes from "prop-types";
 import { CircularProgress } from "@material-ui/core";
+import { StLogger } from "../utils";
 
 let debounceId;
 
@@ -40,11 +41,11 @@ const EntitySelect = props => {
   const classes = useStyles();
 
   const getOptions = resultList => {
-    console.log("resultList::: ", resultList);
+    StLogger.log("resultList::: ", resultList);
     return resultList.map(result => {
       let option = {};
       option.value = cloneDeep(result);
-      console.log("displayAttributes: ", displayAttributes);
+      StLogger.log("displayAttributes: ", displayAttributes);
       if (displayAttributes.length === 1) {
         option.label = result.displayAttributes[0];
       } else {
@@ -61,7 +62,7 @@ const EntitySelect = props => {
           }
         }, "");
       }
-      console.log("Option: ", option);
+      StLogger.log("Option: ", option);
       return option;
     });
   };
@@ -83,10 +84,10 @@ const EntitySelect = props => {
     let newFilteredList;
     try {
       if (props.searchFnOnKeyPress) {
-        console.log("calling search function API...");
+        StLogger.log("calling search function API...");
         newFilteredList = await props.searchFnOnKeyPress(searchString);
       } else {
-        console.log("filtering on front end...");
+        StLogger.log("filtering on front end...");
         const searchStringLC = searchString.toLowerCase();
         newFilteredList = filterResults(masterEntityList, searchStringLC);
       }
@@ -94,9 +95,9 @@ const EntitySelect = props => {
       console.error("filteredList assign failed, ", error);
       newFilteredList = [];
     }
-    console.log("EntitySelect: newFilteredList: ", newFilteredList);
+    StLogger.log("EntitySelect: newFilteredList: ", newFilteredList);
     const options = getOptions(newFilteredList);
-    console.log("options generated: ", options);
+    StLogger.log("options generated: ", options);
     setSelectableOptions(options);
   }
 
@@ -110,9 +111,9 @@ const EntitySelect = props => {
   };
 
   useEffect(() => {
-    console.log("searchString : ", searchString);
+    StLogger.log("searchString : ", searchString);
     if (searchString.length < 2) {
-      console.log("no api called, search string length < 2");
+      StLogger.log("no api called, search string length < 2");
       return;
     }
     if (!isDebouncing) {

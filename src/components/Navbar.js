@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import appConfig from "../config/appConfig";
 import classNames from "classnames";
 import makeStyles from "@material-ui/styles/makeStyles";
+import { StLogger } from "../utils";
 
 const useStyles = makeStyles(({ divider }) => ({
   navbarItem: {
@@ -20,7 +21,7 @@ const Navbar = props => {
 
   const handleClickNavbarItem = item => event => {
     const { history } = props;
-    console.log("item clicked: ", item);
+    StLogger.log("item clicked: ", item);
     history.push(item.route);
   };
 
