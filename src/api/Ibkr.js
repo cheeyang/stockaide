@@ -1,6 +1,7 @@
 import axios from "axios";
 import get from "lodash/get";
 import { StLogger } from "../utils";
+import { Exception } from "handlebars";
 
 const ibkrApi = axios.create({
   baseURL: "https://localhost:5000/v1/portal",
@@ -19,7 +20,7 @@ const ibkrApi = axios.create({
 export const checkAuthenticationStatus = async () => {
   const url = "/iserver/auth/status";
   const resultSet = await ibkrApi.get(url);
-  return get(resultSet, "data.authenticated", resultSet);
+  return get(resultSet, "data.authenticated");
 };
 
 export const tickle = () => {

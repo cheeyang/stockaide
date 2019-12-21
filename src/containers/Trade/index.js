@@ -49,11 +49,15 @@ const Trade = ({ ibkrAuth, dispatch }) => {
     let auth;
     try {
       auth = await checkAuthenticationStatus();
+      if (!auth) {
+        throw new Error("User is unauthenticated");
+      }
     } catch (e) {
       StLogger.error(e);
       if (!isAuthWindowOpened) {
         window.open("https://localhost:5000");
         setIsAuthWindowOpened(true);
+        StLogger.log("Setting isAuthWindowOpened...");
       }
     } finally {
       setPendingItems(pendingItems.filter(item => item !== "authStatus"));

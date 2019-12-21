@@ -6,7 +6,7 @@ export const StLogger = {
       ...message
     ),
   error: (...message) =>
-    console.log(
+    console.error(
       "%cStLogger : ",
       "color: yellow; background: red; font-weight: 900;",
       ...message
