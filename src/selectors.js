@@ -1,5 +1,7 @@
 const getLoadingItems = () => state => state.app.loadingItems;
 
-const selectors = { getLoadingItems };
+const getTheme = () => state => state.app.theme;
+
+const selectors = { getLoadingItems, getTheme };
 
 export default selectors;

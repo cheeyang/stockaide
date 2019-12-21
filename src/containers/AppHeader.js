@@ -6,17 +6,17 @@ import Hidden from "@material-ui/core/Hidden";
 import Navbar from "../components/Navbar";
 import makeStyles from "@material-ui/styles/makeStyles";
 
-const useStyles = makeStyles(({ background, palette, divider }) => ({
+const useStyles = makeStyles(({ palette: { custom } }) => ({
   appHeader: {
-    background: background.appBars
+    background: custom.appBars
   },
   appHeaderLeft: {
     borderWidth: "0 1px 0 0",
     borderStyle: "solid",
-    borderColor: divider.primary
+    borderColor: custom.primaryDivider
   },
   headerHeight: {
-    flexGrow: 0.7
+    height: "7vh"
   }
 }));
 

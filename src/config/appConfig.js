@@ -1,7 +1,4 @@
-import { THEMES } from "../constants";
-
 const config = {
-  theme: THEMES.LIGHT,
   navbarItems: [
     {
       id: "dashboard",
@@ -17,6 +14,11 @@ const config = {
       id: "trade",
       label: "Trade",
       route: "/trade"
+    },
+    {
+      id: "scan",
+      label: "Scan",
+      route: "/scan"
     }
   ]
 };

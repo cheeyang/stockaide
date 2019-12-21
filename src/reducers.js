@@ -16,8 +16,14 @@ const setLoading = (state, loadingId, showSpinner) => {
   };
 };
 
+const setTheme = (state, theme) => ({
+  ...state,
+  theme
+});
+
 const reducers = {
-  setLoading
+  setLoading,
+  setTheme
 };
 
 export default reducers;

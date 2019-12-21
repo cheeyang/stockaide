@@ -1,50 +1,65 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
+import { MuiThemeProvider } from "@material-ui/core";
+import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import loadTheme from "./theme";
 import "./App.css";
 import AppHeader from "./containers/AppHeader";
 import AppFooter from "./containers/AppFooter";
 import AppContent from "./containers/AppContent";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { select } from "./store";
 import { BrowserRouter as Router } from "react-router-dom";
 import FullScreenSpinner from "./components/FullScreenSpinner";
 import isEmpty from "lodash/isEmpty";
 import makeStyles from "@material-ui/styles/makeStyles";
+import { tickle } from "./api/Ibkr";
+import { StLogger } from "./utils";
 
 const useStyles = makeStyles(theme => ({
   appRoot: {
-    height: "100vh"
+    height: "100vh",
+    width: "100vw"
   }
 }));
 
 const App = props => {
-  const { user, isLoading } = props;
   const classes = useStyles();
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      StLogger.log("executing every minute... ibkrAuth status: ", ibkrAuth);
+      tickle();
+    }, 60000);
+    return () => {
+      clearInterval(timerId);
+    };
+  }, []);
+
+  const theme = useSelector(select.app.getTheme);
+  const user = useSelector(select.auth.getUser);
+  const isLoading = !isEmpty(useSelector(select.app.getLoadingItems));
+  const ibkrAuth = useSelector(select.auth.getIbkrAuth);
+
   return (
-    <Grid container direction="column" className={classes.appRoot}>
-      <Router>
-        {/* TODO: Set up navbar within header for navigation within menu item clicked in drawer*/}
-        <FullScreenSpinner hidden={!isLoading} />
-        <AppHeader hidden={!user} />
-        <AppContent user={user} />
-        <AppFooter hidden={!user} />
-        {/* TODO: Set up Drawer Component for navigation to Portfolio, Trade, */}
-      </Router>
-    </Grid>
+    <MuiThemeProvider theme={loadTheme(theme)}>
+      <ThemeProvider theme={loadTheme(theme)}>
+        <Grid container direction="column" className={classes.appRoot}>
+          <Router>
+            {/* TODO: Set up navbar within header for navigation within menu item clicked in drawer*/}
+            <FullScreenSpinner hidden={!isLoading} />
+            <AppHeader hidden={!user} />
+            <AppContent user={user} />
+            <AppFooter hidden={!user} />
+            {/* TODO: Set up Drawer Component for navigation to Portfolio, Trade, */}
+          </Router>
+        </Grid>
+      </ThemeProvider>
+    </MuiThemeProvider>
   );
 };
 
-const mapState = state => ({
-  user: select.auth.getUser(state),
-  isLoading: !isEmpty(select.app.getLoadingItems(state))
-});
-
-const mapDispatch = dispatch => ({ dispatch });
-
-export default connect(
-  mapState,
-  mapDispatch
-)(App);
+export default App;
 
 /**
  * Search? Should this be forever in app bar?
@@ -60,6 +75,9 @@ export default connect(
  * - Chart
  * - Order
  * - Order Status
+ *
+ * Scanner
+ * - Scan For ConIds Based On Criteria
  *
  * Alerts
  * - Manage Alerts

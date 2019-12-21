@@ -7,6 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Select from "react-select";
 import PropTypes from "prop-types";
 import { CircularProgress } from "@material-ui/core";
+import { StLogger } from "../utils";
 
 let debounceId;
 
@@ -39,17 +40,32 @@ const EntitySelect = props => {
   const [searchString, setSearchString] = useState("");
   const classes = useStyles();
 
-  const getOptions = resultList =>
-    resultList.map(result => {
+  const getOptions = resultList => {
+    StLogger.log("resultList::: ", resultList);
+    return resultList.map(result => {
       let option = {};
       option.value = cloneDeep(result);
-      option.label = displayAttributes.reduce((accumulator, attr, index) => {
-        return index === 0
-          ? `${result[attr]}`
-          : `${accumulator} | ${result[attr]}`;
-      }, "");
+      StLogger.log("displayAttributes: ", displayAttributes);
+      if (displayAttributes.length === 1) {
+        option.label = result.displayAttributes[0];
+      } else {
+        let isFirstValue = true;
+        option.label = displayAttributes.reduce((accumulator, attr) => {
+          if (!result[attr]) {
+            return "";
+          }
+          if (isFirstValue) {
+            isFirstValue = false;
+            return `${result[attr]}`;
+          } else {
+            return `${accumulator} | ${result[attr]}`;
+          }
+        }, "");
+      }
+      StLogger.log("Option: ", option);
       return option;
     });
+  };
 
   const filterResults = (masterEntityList, searchStringLC) =>
     masterEntityList.filter(entity =>
@@ -66,15 +82,22 @@ const EntitySelect = props => {
 
   async function getSearchResults() {
     let newFilteredList;
-    if (props.searchFnOnKeyPress) {
-      console.log("calling search function API...");
-      newFilteredList = await props.searchFnOnKeyPress(searchString);
-    } else {
-      console.log("filtering on front end...");
-      const searchStringLC = searchString.toLowerCase();
-      newFilteredList = filterResults(masterEntityList, searchStringLC);
+    try {
+      if (props.searchFnOnKeyPress) {
+        StLogger.log("calling search function API...");
+        newFilteredList = await props.searchFnOnKeyPress(searchString);
+      } else {
+        StLogger.log("filtering on front end...");
+        const searchStringLC = searchString.toLowerCase();
+        newFilteredList = filterResults(masterEntityList, searchStringLC);
+      }
+    } catch (error) {
+      console.error("filteredList assign failed, ", error);
+      newFilteredList = [];
     }
+    StLogger.log("EntitySelect: newFilteredList: ", newFilteredList);
     const options = getOptions(newFilteredList);
+    StLogger.log("options generated: ", options);
     setSelectableOptions(options);
   }
 
@@ -88,9 +111,9 @@ const EntitySelect = props => {
   };
 
   useEffect(() => {
-    console.log("searchString : ", searchString);
+    StLogger.log("searchString : ", searchString);
     if (searchString.length < 2) {
-      console.log("no api called, search string length < 2");
+      StLogger.log("no api called, search string length < 2");
       return;
     }
     if (!isDebouncing) {
@@ -98,6 +121,9 @@ const EntitySelect = props => {
     }
   }, [searchString, isDebouncing]);
 
+  /**
+   * @param {object} selectedOption
+   */
   const handleSelect = selectedOption => {
     props.onSelect(selectedOption);
     setSelectedOption(selectedOption);
@@ -119,7 +145,7 @@ const EntitySelect = props => {
         inputValue={!isEmpty(searchString) ? searchString : undefined}
         onChange={handleSelect}
         onInputChange={handleInputChange}
-        placeholder="Seach by Company Name or Ticker Symbol"
+        placeholder="Seach by Company Name/Symbol"
         styles={selectStyles}
       />
     </Grid>
