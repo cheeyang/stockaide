@@ -18,6 +18,7 @@ import EntitySelect from "../../components/EntitySelect";
 import { IBKR_SEARCH_RES } from "../../api/constants";
 import TickerInfo from "../../components/TickerInfo";
 import get from "lodash/get";
+import { StLogger } from "../../utils";
 
 const useStyles = makeStyles(theme => ({
   divider: {
@@ -40,16 +41,20 @@ const Trade = ({ ibkrAuth, dispatch }) => {
   const [selectedTicker, setSelectedTicker] = useState();
   const [isLoadingSearchResults, setIsLoadingSearchResults] = useState(false);
   const [tickerInfo, setTickerHistory] = useState({});
+  const [isAuthWindowOpened, setIsAuthWindowOpened] = useState(false);
 
   const handleClick = async () => {
-    console.log("authenticate clicked!");
+    StLogger.log("authenticate clicked!");
     setPendingItems([...pendingItems, "authStatus"]);
     let auth;
     try {
       auth = await checkAuthenticationStatus();
     } catch (e) {
-      console.error(e);
-      window.open("https://localhost:5000");
+      StLogger.error(e);
+      if (!isAuthWindowOpened) {
+        window.open("https://localhost:5000");
+        setIsAuthWindowOpened(true);
+      }
     } finally {
       setPendingItems(pendingItems.filter(item => item !== "authStatus"));
     }
@@ -73,7 +78,7 @@ const Trade = ({ ibkrAuth, dispatch }) => {
         fetchTickerBySymbol(searchString),
         fetchTickerByName(searchString)
       ]);
-      console.log("promiseArray", promiseArray);
+      StLogger.log("promiseArray", promiseArray);
       return promiseArray[0];
     } catch (error) {
       console.error(

@@ -8,6 +8,7 @@ import makeStyles from "@material-ui/styles/makeStyles";
 import get from "lodash/get";
 import { AV_SEARCH } from "../api/constants";
 import { CircularProgress } from "@material-ui/core";
+import { StLogger } from "../utils";
 
 const useStyles = makeStyles(({ palette: { custom } }) => ({
   tickerCard: {
@@ -21,7 +22,7 @@ const useStyles = makeStyles(({ palette: { custom } }) => ({
 
 const TickerInfoAsync = ({ ticker, options }) => {
   const symbol = get(ticker, ["value", AV_SEARCH.SYMBOL]);
-  console.log("Ticker Symbol: ", symbol);
+  StLogger.log("Ticker Symbol: ", symbol);
   const classes = useStyles();
 
   const [indicatorValues, setIndicatorValues] = useState({});
@@ -34,9 +35,9 @@ const TickerInfoAsync = ({ ticker, options }) => {
     options.indicatorList.forEach(async (indicator, index) => {
       setTimeout(() => setLoading([indicator, true]));
       const fetchIndicator = options.indicatorFetchFunctions[index];
-      console.log("indicator: ", indicator);
+      StLogger.log("indicator: ", indicator);
       try {
-        console.log(
+        StLogger.log(
           "indicatorLoadingStatuses before resolved: ",
           indicatorLoadingStatuses
         );
@@ -46,7 +47,7 @@ const TickerInfoAsync = ({ ticker, options }) => {
         console.error(error);
         setTimeout(setIndicatorValue([indicator, "N/A"]));
       } finally {
-        console.log(
+        StLogger.log(
           "indicatorLoadingStatuses after resolved : ",
           indicatorLoadingStatuses
         );
@@ -71,25 +72,25 @@ const TickerInfoAsync = ({ ticker, options }) => {
   }, [indicatorValue]);
 
   useEffect(() => {
-    console.log("indicatorValues", indicatorValues);
+    StLogger.log("indicatorValues", indicatorValues);
   }, [indicatorValues]);
 
   useEffect(() => {
-    console.log("indicatorLoadingStatuses", indicatorLoadingStatuses);
+    StLogger.log("indicatorLoadingStatuses", indicatorLoadingStatuses);
   }, [indicatorLoadingStatuses]);
 
-  console.log("indicatorLoadingStatuses");
+  StLogger.log("indicatorLoadingStatuses");
   return (
     <Card raised className={classes.tickerCard}>
       <CardHeader title={get(ticker, "label")} />
       <CardContent>
         {options.indicatorList.map((indicator, i) => {
-          console.log("$$$indicator : ", indicator);
-          console.log(
+          StLogger.log("$$$indicator : ", indicator);
+          StLogger.log(
             "$$$indicatorLoadingStatuses : ",
             indicatorLoadingStatuses
           );
-          console.log(
+          StLogger.log(
             "$$$indicatorLoadingStatuses[indicator]: ",
             indicatorLoadingStatuses[indicator]
           );

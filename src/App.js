@@ -14,6 +14,7 @@ import FullScreenSpinner from "./components/FullScreenSpinner";
 import isEmpty from "lodash/isEmpty";
 import makeStyles from "@material-ui/styles/makeStyles";
 import { tickle } from "./api/Ibkr";
+import { StLogger } from "./utils";
 
 const useStyles = makeStyles(theme => ({
   appRoot: {
@@ -27,7 +28,7 @@ const App = props => {
 
   useEffect(() => {
     const timerId = setInterval(() => {
-      console.log("executing every minute... ibkrAuth status: ", ibkrAuth);
+      StLogger.log("executing every minute... ibkrAuth status: ", ibkrAuth);
       tickle();
     }, 60000);
     return () => {

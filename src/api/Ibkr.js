@@ -1,7 +1,6 @@
 import axios from "axios";
 import get from "lodash/get";
-import { AV_INTERVAL, AV_SERIES_TYPE } from "./constants";
-import max from "lodash/max";
+import { StLogger } from "../utils";
 
 const ibkrApi = axios.create({
   baseURL: "https://localhost:5000/v1/portal",
@@ -25,13 +24,13 @@ export const checkAuthenticationStatus = async () => {
 
 export const tickle = () => {
   const url = "/tickle";
-  console.log("tickling api to keep session open...");
+  StLogger.log("tickling api to keep session open...");
   ibkrApi.get(url);
 };
 
 /** @param {value} string contains either companySymbol or companyName */
 export const fetchTickerBySymbol = async value => {
-  console.log("calling api for ticker symbol");
+  StLogger.log("calling api for ticker symbol");
   const url = "/iserver/secdef/search";
   let resultSet;
   try {
@@ -47,13 +46,13 @@ export const fetchTickerBySymbol = async value => {
   } catch (err) {
     console.error("error fetching by symbol : ", err);
   }
-  console.log("returning resultset: ", resultSet);
+  StLogger.log("returning resultset: ", resultSet);
   return get(resultSet, "data", []);
 };
 
 /** @param {value} string contains either companySymbol or companyName */
 export const fetchTickerByName = async value => {
-  console.log("calling api for ticker name");
+  StLogger.log("calling api for ticker name");
   const url = "/iserver/secdef/search";
   let resultSet;
   try {
@@ -69,12 +68,12 @@ export const fetchTickerByName = async value => {
   } catch (err) {
     console.error("error fetching by name : ", err);
   }
-  console.log("returning resultset: ", resultSet);
+  StLogger.log("returning resultset: ", resultSet);
   return get(resultSet, "data", []);
 };
 
 export const fetchTickerHistory = async conid => {
-  console.log("calling api for ticker INFO");
+  StLogger.log("calling api for ticker INFO");
   const url = "/iserver/marketdata/history";
   let resultSet;
   try {
@@ -86,7 +85,7 @@ export const fetchTickerHistory = async conid => {
   } catch (err) {
     console.error("error fetching by name : ", err);
   }
-  console.log("returning resultset: ", resultSet);
+  StLogger.log("returning resultset: ", resultSet);
   return get(resultSet, "data", []);
 };
 
@@ -107,7 +106,7 @@ export const hardScan = async () => {
   } catch (err) {
     console.error("error fetching by name : ", err);
   }
-  console.log("returning resultset: ", resultSet);
+  StLogger.log("returning resultset: ", resultSet);
   return get(resultSet, "data", []);
 };
 
