@@ -9,110 +9,67 @@ import get from "lodash/get";
 import { AV_SEARCH } from "../api/constants";
 import { CircularProgress } from "@material-ui/core";
 import { StLogger } from "../utils";
+import Chart from "react-apexcharts";
+import isEmpty from "lodash/isEmpty";
+
+const options = {
+  chart: {
+    id: "basic-candlestick",
+    type: "candlestick"
+  },
+  xaxis: {
+    categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+  }
+};
 
 const useStyles = makeStyles(({ palette: { custom } }) => ({
   tickerCard: {
     marginTop: "100px",
     backgroundColor: custom.cards
+  },
+  cardContent: {
+    position: "relative"
+  },
+  seriesSpinner: {
+    position: "absolute",
+    left: "50%",
+    top: "45%"
   }
 }));
 
+const prepSeries = tickerHistory => {
+  return [];
+};
+
 const TickerInfo = ({ selectedTicker, tickerHistory }) => {
-  StLogger.log("Ticker Info: ", tickerHistory);
+  const classes = useStyles();
+  StLogger.log("selectedTicker: ", selectedTicker);
+  StLogger.log("tickerHistory: ", tickerHistory);
+
+  const series = prepSeries(tickerHistory);
+
   return (
-    <>
-      <Typography>{JSON.stringify(selectedTicker, undefined, 2)}</Typography>
-      <Typography>{JSON.stringify(tickerHistory, undefined, 2)}</Typography>
-    </>
+    <Card raised className={classes.tickerCard}>
+      <CardHeader title={get(selectedTicker, "label")} />
+      <CardContent className={classes.cardContent}>
+        <div className={classes.chartContainer}>
+          <Chart
+            type="candlestick"
+            series={series}
+            options={options}
+            width={500}
+          />
+          {isEmpty(series) && (
+            <CircularProgress
+              className={classes.seriesSpinner}
+              color="primary"
+              size={14}
+            />
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
-  // const { ticker, options } = props;
-  // const symbol = get(ticker, ["value", AV_SEARCH.SYMBOL]);
-  // console.log("Ticker Symbol: ", symbol);
-  // const classes = useStyles();
-
-  // const [indicatorValues, setIndicatorValues] = useState({});
-  // const [indicatorValue, setIndicatorValue] = useState([]); // [indicator, true/false]
-
-  // const [indicatorLoadingStatuses, setIndicatorLoadingStatuses] = useState({});
-  // const [loading, setLoading] = useState([]); // [indicator, true/false]
-
-  // useEffect(() => {
-  //   options.indicatorList.forEach(async (indicator, index) => {
-  //     setTimeout(() => setLoading([indicator, true]));
-  //     const fetchIndicator = options.indicatorFetchFunctions[index];
-  //     console.log("indicator: ", indicator);
-  //     try {
-  //       console.log(
-  //         "indicatorLoadingStatuses before resolved: ",
-  //         indicatorLoadingStatuses
-  //       );
-  //       const value = await fetchIndicator(symbol, options, indicator);
-  //       setTimeout(setIndicatorValue([indicator, value]));
-  //     } catch (error) {
-  //       console.error(error);
-  //       setTimeout(setIndicatorValue([indicator, "N/A"]));
-  //     } finally {
-  //       console.log(
-  //         "indicatorLoadingStatuses after resolved : ",
-  //         indicatorLoadingStatuses
-  //       );
-  //       setTimeout(setLoading([indicator, false]));
-  //     }
-  //   });
-  // }, [symbol, options]);
-
-  // //synchronously set loading statuses
-  // useEffect(() => {
-  //   setIndicatorLoadingStatuses({
-  //     ...indicatorLoadingStatuses,
-  //     [loading[0]]: loading[1]
-  //   });
-  // }, [loading]);
-  // //synchronously set indicator values
-  // useEffect(() => {
-  //   setIndicatorValues({
-  //     ...indicatorValues,
-  //     [indicatorValue[0]]: indicatorValue[1]
-  //   });
-  // }, [indicatorValue]);
-
-  // useEffect(() => {
-  //   console.log("indicatorValues", indicatorValues);
-  // }, [indicatorValues]);
-
-  // useEffect(() => {
-  //   console.log("indicatorLoadingStatuses", indicatorLoadingStatuses);
-  // }, [indicatorLoadingStatuses]);
-
-  // console.log("indicatorLoadingStatuses");
-  // return (
-  //   <Card raised className={classes.tickerCard}>
-  //     <CardHeader title={get(ticker, "label")} />
-  //     <CardContent>
-  //       {options.indicatorList.map((indicator, i) => {
-  //         console.log("$$$indicator : ", indicator);
-  //         console.log(
-  //           "$$$indicatorLoadingStatuses : ",
-  //           indicatorLoadingStatuses
-  //         );
-  //         console.log(
-  //           "$$$indicatorLoadingStatuses[indicator]: ",
-  //           indicatorLoadingStatuses[indicator]
-  //         );
-  //         return (
-  //           <Typography id={`${indicator}-${i}`} variant="body2">
-  //             {`${indicator} : `}
-  //             {indicatorLoadingStatuses[indicator] ? ( //check 'then' for promise object
-  //               <CircularProgress color="secondary" size={12} />
-  //             ) : (
-  //               indicatorValues[indicator]
-  //             )}
-  //           </Typography>
-  //         );
-  //       })}
-  //     </CardContent>
-  //   </Card>
-  // );
 };
 
 export default TickerInfo;
@@ -126,3 +83,44 @@ TickerInfo.propTypes = {
     indicatorList: PropTypes.arrayOf("string")
   })
 };
+
+const sampleFormat1 = [
+  {
+    data: [
+      {
+        x: new Date(2020, 1, 1),
+        y: [20.5, 25.2, 15.2, 22.2]
+      },
+      {
+        x: new Date(2020, 1, 2),
+        y: [23.4, 25.2, 18.9, 24.2]
+      },
+      {
+        x: new Date(2020, 1, 3),
+        y: [25.5, 26.2, 18.2, 25.2]
+      },
+      {
+        x: new Date(2020, 1, 4),
+        y: [28.4, 35.2, 29.9, 32.2]
+      }
+    ]
+  }
+];
+
+const sampleFormat2 = [
+  {
+    data: [
+      [1548115200000, 149.51, 152.22, 147.44, 151.85],
+      [1548633600000, 150.72, 155.22, 150.2, 154.74]
+    ]
+  }
+];
+
+const sampleFormat3 = [
+  {
+    data: [
+      [1538856000000, [6593.34, 6600, 6582.63, 6600]],
+      [1538856900000, [6595.16, 6604.76, 6590.73, 6593.86]]
+    ]
+  }
+];

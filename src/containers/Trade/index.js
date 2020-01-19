@@ -140,10 +140,12 @@ const Trade = ({ ibkrAuth, dispatch }) => {
             />
           </Grid>
           <Grid item>
-            <TickerInfo
-              selectedTicker={selectedTicker}
-              tickerHistory={tickerHistory}
-            />
+            {selectedTicker && (
+              <TickerInfo
+                selectedTicker={selectedTicker}
+                tickerHistory={tickerHistory}
+              />
+            )}
           </Grid>
         </Grid>
       </Grid>
