@@ -1,13 +1,13 @@
 import axios from "axios";
 import get from "lodash/get";
 import { StLogger } from "../utils";
-import { Exception } from "handlebars";
 
 const ibkrApi = axios.create({
   baseURL: "https://localhost:5000/v1/portal",
   headers: {
     accept: "*",
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
+    "Cache-Control": "no-cache"
   }
   /** @todo remove this one deep merge PR is merged in axios */
   /*
@@ -19,8 +19,8 @@ const ibkrApi = axios.create({
 
 export const checkAuthenticationStatus = async () => {
   const url = "/iserver/auth/status";
-  const resultSet = await ibkrApi.get(url);
-  return get(resultSet, "data.authenticated");
+  const response = await ibkrApi.get(url);
+  return get(response, "data.authenticated");
 };
 
 export const tickle = () => {

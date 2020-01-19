@@ -95,8 +95,10 @@ const TickerInfoAsync = ({ ticker, options }) => {
             indicatorLoadingStatuses[indicator]
           );
           return (
-            <Typography id={`${indicator}-${i}`} variant="body2">
-              {`${indicator} : `}
+            <>
+              <Typography id={`${indicator}-${i}`} variant="body2">
+                {`${indicator} : `}
+              </Typography>
               {indicatorLoadingStatuses[indicator] ? ( //check 'then' for promise object
                 <CircularProgress
                   color="secondary"
@@ -106,7 +108,7 @@ const TickerInfoAsync = ({ ticker, options }) => {
               ) : (
                 indicatorValues[indicator]
               )}
-            </Typography>
+            </>
           );
         })}
       </CardContent>

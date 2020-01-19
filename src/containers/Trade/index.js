@@ -40,7 +40,7 @@ const Trade = ({ ibkrAuth, dispatch }) => {
   const [pendingItems, setPendingItems] = useState([]);
   const [selectedTicker, setSelectedTicker] = useState();
   const [isLoadingSearchResults, setIsLoadingSearchResults] = useState(false);
-  const [tickerInfo, setTickerHistory] = useState({});
+  const [tickerHistory, setTickerHistory] = useState({});
   const [isAuthWindowOpened, setIsAuthWindowOpened] = useState(false);
 
   const handleClick = async () => {
@@ -140,7 +140,10 @@ const Trade = ({ ibkrAuth, dispatch }) => {
             />
           </Grid>
           <Grid item>
-            <TickerInfo selectedTicker={selectedTicker} />
+            <TickerInfo
+              selectedTicker={selectedTicker}
+              tickerHistory={tickerHistory}
+            />
           </Grid>
         </Grid>
       </Grid>
@@ -156,7 +159,4 @@ const mapDispatch = dispatch => ({
   dispatch
 });
 
-export default connect(
-  mapState,
-  mapDispatch
-)(Trade);
+export default connect(mapState, mapDispatch)(Trade);

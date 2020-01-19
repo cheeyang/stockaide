@@ -8,6 +8,7 @@ import makeStyles from "@material-ui/styles/makeStyles";
 import get from "lodash/get";
 import { AV_SEARCH } from "../api/constants";
 import { CircularProgress } from "@material-ui/core";
+import { StLogger } from "../utils";
 
 const useStyles = makeStyles(({ palette: { custom } }) => ({
   tickerCard: {
@@ -16,9 +17,13 @@ const useStyles = makeStyles(({ palette: { custom } }) => ({
   }
 }));
 
-const TickerInfo = ({ selectedTicker }) => {
+const TickerInfo = ({ selectedTicker, tickerHistory }) => {
+  StLogger.log("Ticker Info: ", tickerHistory);
   return (
-    <Typography>{JSON.stringify(selectedTicker, undefined, 2)}</Typography>
+    <>
+      <Typography>{JSON.stringify(selectedTicker, undefined, 2)}</Typography>
+      <Typography>{JSON.stringify(tickerHistory, undefined, 2)}</Typography>
+    </>
   );
   // const { ticker, options } = props;
   // const symbol = get(ticker, ["value", AV_SEARCH.SYMBOL]);

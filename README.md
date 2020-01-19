@@ -5,6 +5,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 Run [bin\run.bat root\conf.yaml] in Windows
 or [bin/run.sh root/conf.yaml] in Mac/Unix
 
+REMEMBER to DISABLE cache and ENABLE cors plugin
+Use FIREFOX. Chrome does not allow the plugin to take effect.
+
 Windows: Add
 ["C:\Program Files\Google\Chrome\Application\chrome.exe" --disable-web-security --user-data-dir="C:\tmpChromeSession"]
 into Chrome shortcut -> properties -> target
