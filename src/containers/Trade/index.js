@@ -40,10 +40,11 @@ const Trade = ({ ibkrAuth, dispatch }) => {
   const [pendingItems, setPendingItems] = useState([]);
   const [selectedTicker, setSelectedTicker] = useState();
   const [isLoadingSearchResults, setIsLoadingSearchResults] = useState(false);
-  const [tickerHistory, setTickerHistory] = useState({});
+  const [tickerHistory, setTickerHistory] = useState([]);
   const [isAuthWindowOpened, setIsAuthWindowOpened] = useState(false);
+  const [isLoadingHistory, setLoadingHistory] = useState(false);
 
-  const handleClick = async () => {
+  const handleAuthenticateClicked = async () => {
     StLogger.log("authenticate clicked!");
     setPendingItems([...pendingItems, "authStatus"]);
     let auth;
@@ -95,8 +96,16 @@ const Trade = ({ ibkrAuth, dispatch }) => {
   };
 
   const retrieveTickerHistory = async conid => {
-    const res = await fetchTickerHistory(conid);
-    setTickerHistory(res && res.data);
+    let res;
+    try {
+      setLoadingHistory(true);
+      res = await fetchTickerHistory(conid);
+      setTickerHistory(res && res.data);
+    } catch (e) {
+      StLogger.error(e);
+    } finally {
+      setLoadingHistory(false);
+    }
   };
 
   const handleSelectTicker = selectedTicker => {
@@ -119,7 +128,10 @@ const Trade = ({ ibkrAuth, dispatch }) => {
           direction="column"
           className={classes.authContainer}
         >
-          <Button className={classes.marginTop} onClick={handleClick}>
+          <Button
+            className={classes.marginTop}
+            onClick={handleAuthenticateClicked}
+          >
             Check Authentication
           </Button>
           <Typography variant="body1">
@@ -144,6 +156,7 @@ const Trade = ({ ibkrAuth, dispatch }) => {
               <TickerInfo
                 selectedTicker={selectedTicker}
                 tickerHistory={tickerHistory}
+                isLoading={isLoadingHistory}
               />
             )}
           </Grid>

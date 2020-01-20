@@ -16,58 +16,74 @@ const options = {
   chart: {
     id: "basic-candlestick",
     type: "candlestick"
-  },
-  xaxis: {
-    categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
   }
+  // ,
+  // xaxis: {
+  //   categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+  // }
 };
 
 const useStyles = makeStyles(({ palette: { custom } }) => ({
   tickerCard: {
     marginTop: "100px",
-    backgroundColor: custom.cards
-  },
-  cardContent: {
+    backgroundColor: custom.cards,
     position: "relative"
   },
   seriesSpinner: {
     position: "absolute",
-    left: "50%",
-    top: "45%"
+    right: "20px",
+    top: "20px"
   }
 }));
 
 const prepSeries = tickerHistory => {
-  return [];
+  console.debug("ticker history: ", tickerHistory);
+  const series = [
+    {
+      data:
+        tickerHistory &&
+        tickerHistory.map((dataPoint, i) => {
+          const newDataPoint = {};
+          newDataPoint.x = new Date(dataPoint.t);
+          newDataPoint.y = [dataPoint.o, dataPoint.h, dataPoint.l, dataPoint.c];
+          StLogger.log(`Point ${i} = `, newDataPoint);
+          return newDataPoint;
+        })
+    }
+  ];
+  StLogger.log("series : ", series);
+  return series;
 };
 
-const TickerInfo = ({ selectedTicker, tickerHistory }) => {
+const TickerInfo = ({ selectedTicker, tickerHistory, isLoading }) => {
   const classes = useStyles();
   StLogger.log("selectedTicker: ", selectedTicker);
   StLogger.log("tickerHistory: ", tickerHistory);
 
-  const series = prepSeries(tickerHistory);
+  const [series, setSeries] = useState([]);
+
+  useEffect(() => {
+    setSeries(prepSeries(tickerHistory));
+  }, [tickerHistory]);
 
   return (
     <Card raised className={classes.tickerCard}>
       <CardHeader title={get(selectedTicker, "label")} />
-      <CardContent className={classes.cardContent}>
-        <div className={classes.chartContainer}>
-          <Chart
-            type="candlestick"
-            series={series}
-            options={options}
-            width={500}
-          />
-          {isEmpty(series) && (
-            <CircularProgress
-              className={classes.seriesSpinner}
-              color="primary"
-              size={14}
-            />
-          )}
-        </div>
+      <CardContent>
+        <Chart
+          type="candlestick"
+          series={series}
+          options={options}
+          width={500}
+        />
       </CardContent>
+      {isLoading && (
+        <CircularProgress
+          className={classes.seriesSpinner}
+          color="primary"
+          size={20}
+        />
+      )}
     </Card>
   );
 };

@@ -1,6 +1,7 @@
 import axios from "axios";
 import get from "lodash/get";
 import { StLogger } from "../utils";
+import { mockFetchHistory, mockSearch } from "../mocks/promises/fetchFunctions";
 
 const ibkrApi = axios.create({
   baseURL: "https://localhost:5000/v1/portal",
