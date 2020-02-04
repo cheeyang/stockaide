@@ -24,7 +24,7 @@ const loadTheme = theme =>
       custom: {
         appBars: theme === "dark" ? blueGrey[700] : cyan[200],
         appContent: theme === "dark" ? blueGrey[900] : grey[50],
-        cards: theme === "dark" ? teal["A700"] : lightGreen[50],
+        cards: lightGreen[50],
         spinner: blue[800],
         primaryDivider: theme === "dark" ? grey[100] : grey[800],
         secondaryDivider: theme === "dark" ? grey[300] : grey[600],
@@ -39,10 +39,15 @@ const loadTheme = theme =>
     typography: {
       fontSize: 12,
       title: {
-        color: theme === "dark" ? cyan[50] : blue[800]
+        color: theme === "dark" ? cyan[50] : blue[800],
+        weight: "bold"
       },
       body1: {
         color: theme === "dark" ? cyan[50] : blue[800]
+      },
+      body2: {
+        color: theme === "dark" ? cyan[50] : blue[800],
+        fontSize: 8
       }
     },
     //Overrrides

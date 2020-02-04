@@ -7,7 +7,7 @@ import "./App.css";
 import AppHeader from "./containers/AppHeader";
 import AppFooter from "./containers/AppFooter";
 import AppContent from "./containers/AppContent";
-import { connect, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { select } from "./store";
 import { BrowserRouter as Router } from "react-router-dom";
 import FullScreenSpinner from "./components/FullScreenSpinner";
