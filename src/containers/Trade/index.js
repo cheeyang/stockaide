@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     width: "100%"
   },
   entitySelect: {
-    width: "80%"
+    width: "100%"
   },
   marginTop: {
     marginTop: "20px"
@@ -138,8 +138,11 @@ const Trade = ({ ibkrAuth, dispatch }) => {
             Authentication status: {renderAuthStatus()}
           </Typography>
           <Grid
+            container
             item
             className={classNames(classes.entitySelect, classes.marginTop)}
+            justify="center"
+            alignItems="center"
           >
             <EntitySelect
               searchFnOnKeyPress={fetchResults}

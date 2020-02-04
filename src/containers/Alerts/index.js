@@ -67,7 +67,13 @@ const Alerts = props => {
         <Typography variant="title">Set Alerts</Typography>
       </Grid>
       <Divider className={classes.divider} />
-      <Grid item className={classes.entitySelect}>
+      <Grid
+        container
+        item
+        className={classes.entitySelect}
+        justify="center"
+        alignItems="center"
+      >
         <EntitySelect
           searchFnOnKeyPress={fetchResults}
           onSelect={handleSelectTicker}

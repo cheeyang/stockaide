@@ -130,7 +130,13 @@ const EntitySelect = props => {
   };
 
   return (
-    <Grid id="entitySearchWrapper" className={classes.entitySearchWrapper}>
+    <Grid
+      id="entitySearchWrapper"
+      className={classes.entitySearchWrapper}
+      xs={12}
+      sm={10}
+      md={8}
+    >
       {isLoading && (
         <CircularProgress
           size={30}

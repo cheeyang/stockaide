@@ -26,7 +26,13 @@ const Navbar = props => {
   };
 
   return (
-    <Grid id="navbarContainer" container direction="row" justify="center">
+    <Grid
+      id="navbarContainer"
+      container
+      direction="row"
+      justify="center"
+      spacing={10}
+    >
       {navbarItems.map((item, index) => (
         <Grid
           item
