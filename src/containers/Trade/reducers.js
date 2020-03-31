@@ -1,10 +1,16 @@
-const setTicker = (state, ticker) => ({
+const setSelectedTicker = (state, selectedTicker) => ({
   ...state,
-  ticker
+  selectedTicker
+});
+
+const setTickerHistory = (state, tickerHistory) => ({
+  ...state,
+  tickerHistory
 });
 
 const reducers = {
-  setTicker
+  setSelectedTicker,
+  setTickerHistory
   // setIbkrAuth
 };
 

@@ -16,9 +16,9 @@ import { CircularProgress } from "@material-ui/core";
 import { select } from "../../store";
 import EntitySelect from "../../components/EntitySelect";
 import { IBKR_SEARCH_RES } from "../../api/constants";
-import TickerInfo from "../../components/TickerInfo";
 import get from "lodash/get";
 import { StLogger } from "../../utils";
+import TickerView from "./components/TickerView";
 
 const useStyles = makeStyles(theme => ({
   divider: {
@@ -35,12 +35,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Trade = ({ ibkrAuth, dispatch }) => {
+const Trade = ({ ibkrAuth, selectedTicker, dispatch }) => {
   const classes = useStyles();
   const [pendingItems, setPendingItems] = useState([]);
-  const [selectedTicker, setSelectedTicker] = useState();
   const [isLoadingSearchResults, setIsLoadingSearchResults] = useState(false);
-  const [tickerHistory, setTickerHistory] = useState([]);
   const [isAuthWindowOpened, setIsAuthWindowOpened] = useState(false);
   const [isLoadingHistory, setLoadingHistory] = useState(false);
 
@@ -51,7 +49,7 @@ const Trade = ({ ibkrAuth, dispatch }) => {
     try {
       auth = await checkAuthenticationStatus();
       if (!auth) {
-        throw new Error("User is unauthenticated");
+        throw Error("User is unauthenticated");
       }
     } catch (e) {
       StLogger.error(e);
@@ -100,7 +98,8 @@ const Trade = ({ ibkrAuth, dispatch }) => {
     try {
       setLoadingHistory(true);
       res = await fetchTickerHistory(conid);
-      setTickerHistory(res && res.data);
+      dispatch.trade.setTickerHistory(res);
+      StLogger.log("Dispatching to ticker history: ", res);
     } catch (e) {
       StLogger.error(e);
     } finally {
@@ -108,9 +107,9 @@ const Trade = ({ ibkrAuth, dispatch }) => {
     }
   };
 
-  const handleSelectTicker = selectedTicker => {
-    setSelectedTicker(selectedTicker);
-    retrieveTickerHistory(get(selectedTicker, "value.conid"));
+  const handleSelectTicker = ticker => {
+    dispatch.trade.setSelectedTicker(ticker);
+    retrieveTickerHistory(get(ticker, "value.conid"));
   };
 
   return (
@@ -156,9 +155,8 @@ const Trade = ({ ibkrAuth, dispatch }) => {
           </Grid>
           <Grid item>
             {selectedTicker && (
-              <TickerInfo
+              <TickerView
                 selectedTicker={selectedTicker}
-                tickerHistory={tickerHistory}
                 isLoading={isLoadingHistory}
               />
             )}
@@ -170,7 +168,8 @@ const Trade = ({ ibkrAuth, dispatch }) => {
 };
 
 const mapState = state => ({
-  ibkrAuth: select.auth.getIbkrAuth(state)
+  ibkrAuth: select.auth.getIbkrAuth(state),
+  selectedTicker: select.trade.getSelectedTicker(state)
 });
 
 const mapDispatch = dispatch => ({

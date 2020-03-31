@@ -11,6 +11,8 @@ import { CircularProgress } from "@material-ui/core";
 import { StLogger } from "../utils";
 import Chart from "react-apexcharts";
 import isEmpty from "lodash/isEmpty";
+import { connect } from "react-redux";
+import { select } from "../store";
 
 const options = {
   chart: {
@@ -37,16 +39,15 @@ const useStyles = makeStyles(({ palette: { custom } }) => ({
 }));
 
 const prepSeries = tickerHistory => {
-  console.debug("ticker history: ", tickerHistory);
   const series = [
     {
       data:
-        tickerHistory &&
+        !isEmpty(tickerHistory) &&
         tickerHistory.map((dataPoint, i) => {
           const newDataPoint = {};
           newDataPoint.x = new Date(dataPoint.t);
           newDataPoint.y = [dataPoint.o, dataPoint.h, dataPoint.l, dataPoint.c];
-          StLogger.log(`Point ${i} = `, newDataPoint);
+          StLogger.info(`Point ${i} = `, newDataPoint);
           return newDataPoint;
         })
     }
@@ -55,16 +56,12 @@ const prepSeries = tickerHistory => {
   return series;
 };
 
-const TickerInfo = ({ selectedTicker, tickerHistory, isLoading }) => {
+const TickerChart = ({ selectedTicker, tickerHistory, isLoading }) => {
   const classes = useStyles();
   StLogger.log("selectedTicker: ", selectedTicker);
   StLogger.log("tickerHistory: ", tickerHistory);
 
-  const [series, setSeries] = useState([]);
-
-  useEffect(() => {
-    setSeries(prepSeries(tickerHistory));
-  }, [tickerHistory]);
+  const series = prepSeries(tickerHistory);
 
   return (
     <Card raised className={classes.tickerCard}>
@@ -88,9 +85,18 @@ const TickerInfo = ({ selectedTicker, tickerHistory, isLoading }) => {
   );
 };
 
-export default TickerInfo;
+const mapState = state => ({
+  ibkrAuth: select.auth.getIbkrAuth(state),
+  tickerHistory: select.trade.getTickerHistory(state)
+});
 
-TickerInfo.propTypes = {
+const mapDispatch = dispatch => ({
+  dispatch
+});
+
+export default connect(mapState, mapDispatch)(TickerChart);
+
+TickerChart.propTypes = {
   ticker: PropTypes.shape({
     label: PropTypes.string.isRequired,
     value: PropTypes.object.isRequired

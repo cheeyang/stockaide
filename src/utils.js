@@ -1,4 +1,5 @@
 export const StLogger = {
+  ...console,
   log: (...message) =>
     console.log(
       "%cStLogger : ",

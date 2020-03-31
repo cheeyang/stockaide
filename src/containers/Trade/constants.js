@@ -1,3 +1,4 @@
 export const INITIAL_STATE = {
-  ticker: undefined
+  selectedTicker: undefined,
+  tickerHistory: []
 };

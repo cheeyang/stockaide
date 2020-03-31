@@ -7,6 +7,7 @@ or [bin/run.sh root/conf.yaml] in Mac/Unix
 
 REMEMBER to DISABLE cache and ENABLE cors plugin
 Use FIREFOX. Chrome does not allow the plugin to take effect.
+If still does not work, manually empty cache and click authenticate again.
 
 Windows: Add
 ["C:\Program Files\Google\Chrome\Application\chrome.exe" --disable-web-security --user-data-dir="C:\tmpChromeSession"]

@@ -88,7 +88,7 @@ export const fetchTickerHistory = async conid => {
     console.error("error fetching by name : ", err);
   }
   StLogger.log("returning resultset: ", resultSet);
-  return get(resultSet, "data", []);
+  return get(resultSet, "data.data", []);
 };
 
 /**@todo Allow user to select from list of INSTRUMENT, TYPE, etc. by calling /iserver/scanner/params */
